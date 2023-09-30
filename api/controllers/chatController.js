@@ -1,57 +1,64 @@
-const Chat = require('../models/Message');
-const User = require('../models/User');
+const Chat = require('../models/ChatModel');
+const User = require('../models/UserModel');
 
-// Showing the chats for a user
-exports.ShowChats = async (req, res) => {
-  try{
-    const userId = req.user.id
+exports.accessChat = async (req, res) => {
+  const { userId } = req.body;
 
-    // Find the chats where the user participates.
-    const chats = await Chat.find({ participants: userId })
-        .populate('participants', 'username')
-        .exec();
-
-    res.status(200).json({ chats })
-  } catch (error) {
-    console.error('Error fetching chats: ', error);
-    res.status(500).json({ error: 'An error occured while fetching chats' })
+  if (!userId) {
+    console.log('userId is not sent with the request');
+    return res.status(400).json({ error: 'userId is required' });
   }
-};
 
-exports.sendMessage = async (req, res) => {
   try {
-    const { receiverId, content } = req.body;
-    const senderId = req.user.id;
+    // Check if a chat already exists between the two users
+    const isChat = await Chat.findOne({
+      users: {
+        $all: [req.user._id, userId],
+      },
+    }).populate('users', '-password').populate('latestMessage');
 
-    if (! receiverId || !content){
-      return res.status(400).json({ error: 'Invalid receiver or message content' });
-    }
+    if (isChat) {
+      res.status(200).json(isChat);
+      
+    } else {
+      // Chech if the users is trying to create chats with themselves.
+      if (req.user._id === userId) {
+        res.status(400).json({error: 'You cannot create a chat with yourself'});
+      }else{
+        // Create a new chat if it doesn't exist
+        const chatData = {
+          ChatName: 'Sender',
+          users: [req.user._id, userId],
+      };
+      
+      const createdChat = await Chat.create(chatData);
+      const fullChat = await Chat.findOne({ _id: createdChat._id }).populate('users', '-password');
 
-    // Check if chats exists betwetween sender and receiver
-    let chat = await Chat.findOne({
-      participants: {$all: [senderId, receiverId] },
-    }).exec();
-
-    // If there are no chats, create a new chat
-    if (!chat) {
-      chat = new Chat({
-        participants: [senderId, receiverId],
-      });
-    }
-
-    // Adding the message to the chat
-    io.to(receiverSocketId).emit('newMessage', {
-      senderId,
-      content,
-    })
-
-    await chat.save();
-    
-
-    res.status(200).json({message: 'Message sent'});
+      res.status(200).json(fullChat);
+            
+      }
+  }
   } catch (error) {
-    console.error('Error while sending message:', error);
-    res.status(500).json({error: 'An error occurred while sending the message'})
+    console.error(error);
+    res.status(500).json({ error: 'An error occurred while accessing the chat' });
   }
 };
 
+exports.getChat = async (req, res) => {
+  try {
+    const chats = await Chat.find({ users: { $ne: [req.user._id] } })
+      .populate('users', '-password')
+      .populate('latestMessage')
+      .sort({ updatedAt: -1 });
+
+    const populatedChats = await User.populate(chats, {
+      path: 'latestMessage.sender',
+      select: 'username email status',
+    });
+
+    res.status(200).json(populatedChats);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'An error occurred while getting chats' });
+  }
+};
