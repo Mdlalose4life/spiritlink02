@@ -16,6 +16,13 @@ function Sidebar() {
       try {
         const response = await customAxios.get('/user/getAllUsers');
         setUsers(response.data);
+          toast({
+            title: 'Talk to friends',
+            description: 'friends list load successfuly',
+            status: 'success',
+            duration: 5000,
+            isClosable: true,
+          });
       } catch (error) {
         console.error(error);
         toast({
@@ -42,18 +49,10 @@ function Sidebar() {
       const { payload } = await customAxios.post('/chat/accessChat', { userId}, config);
       if (!chats.find((c) => c._id === payload._id)) setChats([payload, ...chats])
       setSelectedChat(payload)
-    } catch (error) {
-      console.error(error);
-      toast({
-        title: 'Error',
-        description: 'Failed creat a Chat. Please try again later.',
-        status: 'error',
-        duration: 5000,
-        isClosable: true,
-      });
-    }
+    } catch (error){
+      console.error('Error creating chat:', error);      
+    }  
 }
-
   return (
     <Box p={4}>
       <Heading size="md" mb={2}>

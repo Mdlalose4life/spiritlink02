@@ -26,8 +26,7 @@ function Signup() {
   const [confirmpassword, setConfirmPassword] = useState('');
   const [accesslink, setAccessLink] = useState('');
   const [error, setError] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const {SignupUser} = useUserContext();
+  const {SignupUser} = useUserContext;
 
   
   async function signupHandler(ev) {
@@ -41,9 +40,15 @@ function Signup() {
         accesslink,
       });
 
-      const userData = response.data;
-      SignupUser(userData)
-
+      console.log('Signup response', response.data);
+      SignupUser(response.user);
+      toast({
+        title: 'Signup Successful',
+        status: 'success',
+        duration: 5000,
+        isClosable: true,
+      });
+      
     } catch (error) {
       console.error('Signup failed',error);
       toast({
@@ -108,7 +113,7 @@ function Signup() {
               onChange={(e) => setAccessLink(e.target.value)}
             />
           </FormControl>
-          <Button colorScheme="blue" type="submit" isLoading={isLoading} loadingText="Signing up..." onClick={() => setIsLoading(true)}>
+          <Button colorScheme="blue" type="submit">
             Signup
           </Button>
           <Text textAlign="center">

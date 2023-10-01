@@ -9,12 +9,13 @@ import {
   Stack, 
   Text, 
   Link as ChakraLink,
-useToast } from '@chakra-ui/react';
-import { Link } from 'react-router-dom';
+  useToast,
+  CircularProgress,
+  CircularProgressLabel
+} from '@chakra-ui/react';
+import { Link, useNavigate } from 'react-router-dom';
 import { useUserContext } from '../UserContext';
 import customAxios from '../axiosUser';
-
-
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -22,27 +23,48 @@ function Login() {
   const { LoginUser } = useUserContext();
   const [error, setError] = useState('');
   const toast = useToast();
-  //const history = useHistory();
+  const navigate = useNavigate();  
+  const [isLoading, setIsLoading] = useState(false);
+
   async function loginHandler(ev) {
     ev.preventDefault();
 
     try {
+      // Set loading state
+      setIsLoading(true);
+
       const response = await customAxios.post('/user/login', {
         email,
         password,
       });
+
       console.log('Login response', response.data);
-      //history.push('/Chat')
-    }catch (error) {
-        console.error(error);
-        toast({
-          title: 'Error',
-          description: 'Invalid email or password',
-          status: 'error',
-          duration: 5000,
-          isClosable: true,
-        });
-      }
+      toast({
+        title: 'Logged in successfully',
+        description: 'Logged in successfully',
+        status: 'success',
+        duration: 5000,
+        isClosable: true,
+      });
+
+      // Navigate to the chat page upon successful login
+      navigate('/chat');
+
+    } catch (error) {
+      console.error(error);
+      toast({
+        title: 'Error',
+        description: 'Invalid email or password',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+    } finally {
+      // Reset loading state after login attempt
+      setIsLoading(false);
+    }
+
+    // Call LoginUser function if needed
     await LoginUser({ email, password });
   }
 
@@ -69,9 +91,25 @@ function Login() {
               onChange={(e) => setPassword(e.target.value)}
             />
           </FormControl>
-          <Button colorScheme="blue" type="submit">
-            Login
-            <i class="fa-solid fa-right-to-bracket"></i>
+          <Button
+            colorScheme="blue"
+            type="submit"
+            isLoading={isLoading}
+            loadingText="Logging in..."
+          >
+            {isLoading ? (
+              <>
+                <CircularProgress
+                  isIndeterminate
+                  size="24px"
+                  color='blue.400'
+                  trackColor='transparent'
+                />
+                <CircularProgressLabel ml={2}>Logging in...</CircularProgressLabel>
+              </>
+            ) : (
+              'Login'
+            )}
           </Button>
           <Text textAlign="center">
             Don't have an account?{' '}
