@@ -21,14 +21,14 @@ exports.registerUser = async (req, res) => {
     // Check if email email exists
     const userExist = await User.findOne({ email });
       if (userExist){
-        return res.status(400).jsonjson({ message: 'User alredy exist' });
+        return res.status(400).json({ message: 'User alredy exist' });
       } 
 
-    // Create the user
+    // Create the user if doesn't exists
     const user = new User({ username, email, password, confirmpassword });
     await user.save();
 
-  // generate the JWT token
+  // generate and sign the JWT token
   const token = jwt.sign({ userId: user._id }, secretKey);
 
   // Send the token to the client

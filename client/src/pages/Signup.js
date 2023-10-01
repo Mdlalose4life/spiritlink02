@@ -9,19 +9,27 @@ import {
   Stack, 
   Text, 
   Link as ChakraLink,
+  useToast
  } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 import { useUserContext } from '../UserContext';
 import customAxios from '../axiosUser';
 
+
+
 function Signup() {
+  const toast = useToast();
   const [username, setUsername] = useState('');
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmpassword, setConfirmPassword] = useState('');
   const [accesslink, setAccessLink] = useState('');
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const {SignupUser} = useUserContext();
 
+  
   async function signupHandler(ev) {
     ev.preventDefault();
     try {
@@ -32,10 +40,19 @@ function Signup() {
         confirmpassword,
         accesslink,
       });
-      console.log('Signup response', response.data);
-    } catch (err) {
-      console.error('Signup failed', err);
-      setError('Signup failed. Please check your information and try again.');
+
+      const userData = response.data;
+      SignupUser(userData)
+
+    } catch (error) {
+      console.error('Signup failed',error);
+      toast({
+        title: 'Error',
+        description: 'Signup failed. Please check your information and try again.',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
     }
   }
 
@@ -91,7 +108,7 @@ function Signup() {
               onChange={(e) => setAccessLink(e.target.value)}
             />
           </FormControl>
-          <Button colorScheme="blue" type="submit">
+          <Button colorScheme="blue" type="submit" isLoading={isLoading} loadingText="Signing up..." onClick={() => setIsLoading(true)}>
             Signup
           </Button>
           <Text textAlign="center">

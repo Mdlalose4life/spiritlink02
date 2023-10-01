@@ -1,6 +1,10 @@
 import React from 'react';
-import { Button, Box, Heading, Text} from '@chakra-ui/react';
-//import { useHistory } from 'react-router-dom';
+import { Button,
+  Box,
+  Heading,
+  Text} from '@chakra-ui/react';
+  import { Link } from '@chakra-ui/react';
+  import { useHistory } from 'react-router-dom';
 
 function Home() {
   //const history = useHistory();
@@ -23,7 +27,7 @@ function Home() {
         Stay connected.
       </Text>
       <Button colorScheme="blue" size="lg" mt={8}>
-        Get Started
+      <Link href='/Signup' >Get Started</Link>
       </Button>
     </Box>
   );

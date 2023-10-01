@@ -23,6 +23,18 @@ export function UserProvider({ children }) {
             console.error('Login failed', error);
         }
     };
+
+    async function SignupUser(userData){
+        try {
+            const response = await customAxios.post('user/register', userData);
+            setUser(response.user);
+            // Stor the user token on the local state.
+            localStorage.setItem('UserToken', response.data.token)
+        } catch (error) {
+            console.error('Signup fail', error);
+        }
+    }
+
     async function logoutUser(){
         try {
         // Sending the request to logout to the backend.
@@ -36,7 +48,7 @@ export function UserProvider({ children }) {
         }
     };
     return (
-        <UserContext.Provider value={{ user, LoginUser, logoutUser}}>
+        <UserContext.Provider value={{ user, LoginUser, logoutUser, SignupUser}}>
             {children}
         </UserContext.Provider>
     )

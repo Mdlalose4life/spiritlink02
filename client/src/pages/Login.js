@@ -8,17 +8,21 @@ import {
   Input, 
   Stack, 
   Text, 
-  Link as ChakraLink } from '@chakra-ui/react';
+  Link as ChakraLink,
+useToast } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 import { useUserContext } from '../UserContext';
 import customAxios from '../axiosUser';
+
+
 
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { LoginUser } = useUserContext();
   const [error, setError] = useState('');
-
+  const toast = useToast();
+  //const history = useHistory();
   async function loginHandler(ev) {
     ev.preventDefault();
 
@@ -28,10 +32,17 @@ function Login() {
         password,
       });
       console.log('Login response', response.data);
-    } catch (err) {
-      console.error('Login failed', err);
-      setError('Invalid email or password');
-    }
+      //history.push('/Chat')
+    }catch (error) {
+        console.error(error);
+        toast({
+          title: 'Error',
+          description: 'Invalid email or password',
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+        });
+      }
     await LoginUser({ email, password });
   }
 

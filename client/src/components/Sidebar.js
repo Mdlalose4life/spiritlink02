@@ -1,25 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Heading, List, ListItem, ListIcon, useToast } from '@chakra-ui/react';
 import { MdArrowForward } from 'react-icons/md';
-import customAxios from '../axiosUser'
+import customAxios from '../axiosUser';
+import { useChat } from '../ChatContext';
 
 function Sidebar() {
-  const toast = useToast()
+  const toast = useToast();
   const rooms = ["Groups", "private chat"];
-  const [users, setUsers] = useState([]); // State to store the fetched users
+  const [users, setUsers] = useState([]);
+  
+  const {user, setSelectedChat, chats, setChats} = useChat()
 
   useEffect(() => {
-    // Define a function to fetch all users
     const fetchUsers = async () => {
       try {
-        // Make an Axios GET request to your backend API to fetch users
         const response = await customAxios.get('/user/getAllUsers');
         setUsers(response.data);
       } catch (error) {
-        console.error(error)
+        console.error(error);
         toast({
-          title: 'Error',
-          description: 'Failed to fetch users. Please try again later.',
+          title: 'Error fetching the chats',
+          description: 'Failed to fetch Chats. Please try again later.',
           status: 'error',
           duration: 5000,
           isClosable: true,
@@ -31,26 +32,81 @@ function Sidebar() {
     }
   }, []);
 
+  const accessChat = async (userId) => {
+    try {
+      const config = {
+        headers: {
+          "Content-type":"application/json"
+        },
+      };
+      const { payload } = await customAxios.post('/chat/accessChat', { userId}, config);
+      if (!chats.find((c) => c._id === payload._id)) setChats([payload, ...chats])
+      setSelectedChat(payload)
+    } catch (error) {
+      console.error(error);
+      toast({
+        title: 'Error',
+        description: 'Failed creat a Chat. Please try again later.',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+}
+
   return (
-    <Box p={4} >
+    <Box p={4}>
       <Heading size="md" mb={2}>
         Rooms
       </Heading>
-      <List spacing={2} >
+      <List spacing={2}>
         {rooms.map((room, i) => (
-          <ListItem key={i} boxShadow='xs' bg='blue:200'>
+          <ListItem key={i} boxShadow='xs' bg='blue.200'>
             <ListIcon as={MdArrowForward} />
             {room}
           </ListItem>
         ))}
-        {/* Render the list of users */}
-        {users.length > 0 && (
-          <ListItem>
-              <List px="4">            
-                  {users.map((user, i) => (
-                       <UserListItem key={i}>{user.username}</UserListItem>
-                  ))}              
-              </List>              
+        {users && users.length > 0 && (
+          <ListItem
+            cursor="pointer"
+            bg="blue.200"
+            _hover={{
+              background: '#38B2AC',
+              color: 'black',
+            }}
+            w="100%"
+            d="flex"
+            alignItems="center"
+            color="black"
+            px={3}
+            py={2}
+            mb={2}
+            borderRadius="lg"
+          >
+            <List px="4">
+              {users.map((user, i) => (
+                <ListItem
+                  key={i}
+                  cursor="pointer"
+                  bg="blue.200"
+                  _hover={{
+                    background: '#38B2AC',
+                    color: 'white',
+                  }}
+                  w="100%"
+                  d="flex"
+                  alignItems="center"
+                  color="black"
+                  px={3}
+                  py={2}
+                  mb={2}
+                  borderRadius="lg"
+                  onClick={() => accessChat(user._id)}
+                >
+                  {user.username} {user.status}
+                </ListItem>
+              ))}
+            </List>
           </ListItem>
         )}
       </List>
