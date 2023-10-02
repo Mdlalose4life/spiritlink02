@@ -7,7 +7,7 @@ import {
   Button,
   Text,
   Heading,
-} from '@chakra-ui/react'; // Import Chakra UI components
+} from '@chakra-ui/react';
 import './Chat.css';
 import { useChat } from '../ChatContext';
 import Sidebar from '../components/Sidebar';
