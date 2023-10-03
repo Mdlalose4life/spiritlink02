@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const chatController = require('../controllers/chatController');
-const authenticateToken = require('../middleware/jwtMiddleware')
+const protect = require('../middleware/jwtMiddleware')
 
-router.post('/accessChat', authenticateToken, chatController.accessChat);
-router.get('/getChat', authenticateToken, chatController.getChat);
+router.post('/accessChat', protect, chatController.accessChat);
+router.get('/getChat', protect, chatController.getChat);
 
 
 module.exports = router;

@@ -44,6 +44,8 @@ app.use('/msgs', messageRoutes);
 app.use('/chat', chatRoutes);
 
 
+
+
 // Socket.io logic
 io.on('connection', (socket) => {
   console.log('A user connected');

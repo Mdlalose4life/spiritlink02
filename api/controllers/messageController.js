@@ -1,43 +1,47 @@
 const Message = require("../models/MessageModel");
+const User = require("../models/UserModel")
+const Chat = require("../models/ChatModel")
 
 exports.sendMessage = async (req, res) => {
-  try{
-    const { receiverId, content } = req.body;
-    const senderId = req.user.id;
+  const {content, chatId} = req.body;
+  if (!content || !chatId){
+    res.status(500).json({ error: 'Invalid data passed into request' });
+  }
+  var newMessage = {
+    sender: req.user._id,
+    content: content,
+    chat: chatId
+  }
 
-    if (!receiverId || !content){
-        return res.status(400).json({ error: 'Invalid receiver or message content' });
-    }
+  try {
+    var message = await Message.create(newMessage)
 
-    // create a new message
-    const message = new Message({
-        sender: senderId,
-        receiver: receiverId,
-        content: content,
+    message = await message .populate("sender", "username")
+    message = await message .populate("chat")
+    message = await User.populate(message, {
+      path: 'chat.users',
+      select: 'username email'
     });
 
-    // save the message to the database
-    await message.save()
-
-    res.status(200).json({ message: 'Message sent' })
-  } catch (error){
+    await Chat.findByIdAndUpdate(req.body.chatId, {
+      latestMessage: message,
+    });
+    res.json(message)
+  } catch (error) {
     console.error('Error occured while sending a message', error);
-    res.status(500).json({ error: 'Error occured while sending a message' })
+    res.status(400).json({ error: 'Error occured while sending a message' })
   }
-};
+}
 
-exports.getMessageHistory = async(req, res) => {
-    try{
-      const userId = req.user.userId;
-
-      // Find messages
-      const messaages = await Message.find({
-        $or: [{ sender: userId }, { receiver: userId }],
-      }).exec();
-
-      res.status(200).json({ messaages })
-    } catch (error){
-        console.error('An error while fetching message history', error);
-        res.status(500).json({ error: "An error while fetching message history" })
-    }
+exports.allMessages = async (req, res) => {
+  try {
+    const message = await Message.find({chat: req.params.chatId}).populate(
+      "sender",
+      "username email"
+    ).populate("chat");
+    res.json(message)
+  } catch (error) {
+    console.error('Error occured while fetching messages', error);
+    res.status(400).json({ error: 'Error occured while fetching a message' })
+  }
 }

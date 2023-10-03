@@ -14,7 +14,7 @@ exports.registerUser = async (req, res) => {
     // Logic for registering the new user
     const { username, email, password, confirmpassword, accesslink } = req.body;
   
-    // Compare the accessLink provided
+    // Compare the accessLink provded
     if (!accesslink || accesslink != envAccesslink){
       return res.status(400).json({ message: 'Invalid access link. Please contact the admin' })
     }
