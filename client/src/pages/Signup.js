@@ -11,7 +11,7 @@ import {
   Link as ChakraLink,
   useToast
  } from '@chakra-ui/react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useUserContext } from '../UserContext';
 import customAxios from '../axiosUser';
 
@@ -19,14 +19,15 @@ import customAxios from '../axiosUser';
 
 function Signup() {
   const toast = useToast();
+  const navigate = useNavigate();
   const [username, setUsername] = useState('');
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmpassword, setConfirmPassword] = useState('');
   const [accesslink, setAccessLink] = useState('');
-  const [error, setError] = useState('');
-  const {SignupUser} = useUserContext;
+  const [error] = useState('');
+  const {SignupUser} = useUserContext();
 
   
   async function signupHandler(ev) {
@@ -39,16 +40,17 @@ function Signup() {
         confirmpassword,
         accesslink,
       });
-
       console.log('Signup response', response.data);
       SignupUser(response.user);
+      navigate('/chat');
       toast({
-        title: 'Signup Successful',
+        title: 'success',
+        description: 'Signup successfully.',
         status: 'success',
         duration: 5000,
         isClosable: true,
       });
-      
+
     } catch (error) {
       console.error('Signup failed',error);
       toast({

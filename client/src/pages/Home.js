@@ -1,39 +1,42 @@
 import React from 'react';
-import { Button,
-  Box,
-  Heading,
-  Text} from '@chakra-ui/react';
-  import { Link } from '@chakra-ui/react';
-  import { useHistory } from 'react-router-dom';
+import { Box, Button, Heading, Text } from '@chakra-ui/react';
+import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import backgroundImage from '../assets/neon.jpg'; // Import the background image
 
 function Home() {
-  //const history = useHistory();
+  const navigate = useNavigate();
 
-  //useEffect(() => {
-    //const userInfor = JSON.parse(localStorage.getItem("userInfo"));
-    //setUser(userInfor)
+  const handleGetStartedClick = () => {
+    navigate('/Signup');
+  };
 
-    //if (!userInfor){
-      //history.push("/Chat");
-    //}
-
-  //}, [history])  
   return (
-    <Box className="home-container" textAlign="center">
-      <Heading as="h1" size="xl">
+    <Box
+      className="home-container"
+      textAlign="center"
+      backgroundImage={`url(${backgroundImage})`} // Use the imported background image
+      backgroundSize="cover"
+      backgroundPosition="center center"
+      backgroundRepeat="no-repeat"
+      height="100vh"
+      color="white"
+    >
+      <Heading as="h1" size="xl" py="16" color="#187bcd">
         Welcome to SpiritLink
       </Heading>
-      <Text fontSize="xl" mt={4}>
-        Stay connected.
+      <Text fontSize="xl" mt={4} color="black">
+        Tired of getting spam messages and advertisements in your dedicated community?
+        <br />
+        Or do you want to watch videos without interruptions? 
+        <br />
+        Start using SpiritLink and truly connect with your friends.
       </Text>
-      <Button colorScheme="blue" size="lg" mt={8}>
-      <Link href='/Signup' >Get Started</Link>
+      <Button colorScheme="blue" size="lg" mt={8} onClick={handleGetStartedClick}>
+        Get Started
       </Button>
     </Box>
   );
 }
 
 export default Home;
-
-
-

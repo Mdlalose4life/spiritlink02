@@ -1,25 +1,74 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
-  Container,
   Box,
   Flex,
   Input,
   Button,
   Text,
   Heading,
+  useToast,
 } from '@chakra-ui/react';
 import './Chat.css';
 import { useChat } from '../ChatContext';
 import Sidebar from '../components/Sidebar';
+import customAxios from '../axiosUser';
 
 function Chat({ rooms }) {
   const [newMessage, setNewMessage] = useState('');
-  const [selectedUser, setSelectedUser] = useState();
+  const [message, setMessage] = useState([]);
+  const toast = useToast();
+  const { selectedChat} = useChat();
 
-  const handleSendMessage = () => {
-    if (newMessage.trim() === '') return;
+  const handleSendMessage = async () => {
+    try {
+      const config = {
+        headers: {
+          'Content-type': 'application/json',
+        },
+      };
+      const { payload } = await customAxios.post('/msgs/send', {
+        content: newMessage,
+        chatId: selectedChat._id,
+      }, config);
+      setNewMessage('');
+      setMessage([...message, payload]);
+      console.log(payload);
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: 'Cannot create the messages',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+  };
 
-    setNewMessage('');
+  useEffect(() => {
+    if (selectedChat) {
+      fetchMessages();
+    }
+  }, [selectedChat]);
+
+  const fetchMessages = async () => {
+    try {
+      const config = {
+        headers: {
+          'Content-type': 'application/json',
+        },
+      };
+      const { payload } = await customAxios.get(`/msgs/allMessages/${selectedChat._id}`, config);
+      setMessage(payload);
+      console.log(payload)
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: 'Cannot fetch the messages',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+    }
   };
 
   return (
