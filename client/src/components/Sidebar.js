@@ -4,10 +4,8 @@ import {
   Heading,
   List,
   ListItem,
-  ListIcon,
   useToast,
 } from '@chakra-ui/react';
-import { MdArrowForward } from 'react-icons/md';
 import customAxios from '../axiosUser';
 import { useChat } from '../ChatContext';
 
@@ -48,8 +46,17 @@ function Sidebar() {
           'Content-type': 'application/json',
         },
       };
-      const { payload } = await customAxios.post('/chat/accessChat', { userId }, config);
-      setSelectedChat(payload);
+      const { data } = await customAxios.post('/chat/accessChat', { userId }, config);
+      console.log('Access Chat data:', data);
+      console.log('Chat ID:', data._id);
+      setSelectedChat(data);
+      toast({
+        title: 'Chat Selected',
+        description: 'Chat accessed',
+        status: 'success',
+        duration: 5000,
+        isClosable: true,
+      })
     } catch (error) {
       console.error(error);
     }
@@ -58,20 +65,8 @@ function Sidebar() {
   console.log('Chats:', chats);
   return (
     <Box p={4}>
-      <Heading size="md" mb={2}>
-        Rooms
-      </Heading>
-      <List spacing={2}>
-        {rooms.map((room, i) => (
-          <ListItem key={i} boxShadow="xs" bg="blue.200">
-            <ListIcon as={MdArrowForward} />
-            {room}
-          </ListItem>
-        ))}
-      </List>
-
       <Heading size="md" mt={4} mb={2}>
-        Users
+        Chats
       </Heading>
       <List spacing={2}>
         {allUsers.map((user) => (

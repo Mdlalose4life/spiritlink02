@@ -38,7 +38,7 @@ exports.allMessages = async (req, res) => {
     const message = await Message.find({chat: req.params.chatId}).populate(
       "sender",
       "username email"
-    ).populate("chat");
+    ).populate("chat")
     res.json(message)
   } catch (error) {
     console.error('Error occured while fetching messages', error);

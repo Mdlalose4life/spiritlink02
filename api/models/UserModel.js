@@ -23,7 +23,7 @@ userSchema.pre('save', async function (next){
     // Hash the password
     const hashedPassword = await bcrypt.hash(this.password, 10);
     this.password = hashedPassword;
-    this.confirmPassword = hashedPassword;
+    this.confirmpassword = hashedPassword;
     return next();
   } catch (error){
     return next(error)

@@ -2,7 +2,7 @@ import React from 'react';
 import { Box, Button, Heading, Text } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import backgroundImage from '../assets/neon.jpg'; // Import the background image
+import backgroundImage from '../assets/neon.jpg';
 
 function Home() {
   const navigate = useNavigate();
@@ -15,7 +15,7 @@ function Home() {
     <Box
       className="home-container"
       textAlign="center"
-      backgroundImage={`url(${backgroundImage})`} // Use the imported background image
+      backgroundImage={`url(${backgroundImage})`}
       backgroundSize="cover"
       backgroundPosition="center center"
       backgroundRepeat="no-repeat"

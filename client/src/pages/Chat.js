@@ -19,24 +19,42 @@ function Chat({ rooms }) {
   const toast = useToast();
   const { selectedChat} = useChat();
 
+  useEffect(() => {
+    console.log('Selected Chat in useEffect:', selectedChat);
+    if (selectedChat && selectedChat.data && selectedChat.data._id) {
+      fetchMessages();
+    }
+  }, [selectedChat]);
+
+
   const handleSendMessage = async () => {
+    console.log('Selected Chat in handleSendMessage:', selectedChat);
     try {
+      if (!selectedChat?.data?._id) {
+        console.log('Chat ID is undefined', selectedChat);
+        throw new Error('Selected chat or chat ID is undefined');
+      }
+
+      console.log('Sending Message to Chat ID', selectedChat.data._id)
+
       const config = {
         headers: {
           'Content-type': 'application/json',
         },
       };
-      const { payload } = await customAxios.post('/msgs/send', {
+      
+      const { data } = await customAxios.post('/msgs/send', {
         content: newMessage,
-        chatId: selectedChat._id,
+        chatId: selectedChat.data._id,
       }, config);
       setNewMessage('');
-      setMessage([...message, payload]);
-      console.log(payload);
+      setMessage((prevMessages) => [...prevMessages, data]);
+
     } catch (error) {
+      console.log('Error in handleSendMessage', error)
       toast({
         title: 'Error',
-        description: 'Cannot create the messages',
+        description: `Cannot create the messages: ${error.message}`,
         status: 'error',
         duration: 5000,
         isClosable: true,
@@ -45,25 +63,31 @@ function Chat({ rooms }) {
   };
 
   useEffect(() => {
-    if (selectedChat) {
+    if (selectedChat?.data?._id) {
       fetchMessages();
     }
   }, [selectedChat]);
 
   const fetchMessages = async () => {
     try {
+      console.log('Selected Chat fetch msg', selectedChat)
+      
+      if (!selectedChat || !selectedChat.data || !selectedChat.data._id) {
+        throw new Error('Selected chat or chat ID is undefined');
+      }
+
       const config = {
         headers: {
           'Content-type': 'application/json',
         },
       };
-      const { payload } = await customAxios.get(`/msgs/allMessages/${selectedChat._id}`, config);
+      const { payload } = await customAxios.get(`/msgs/allMessages/${selectedChat.data._id}`, config);
+      console.log('Messages is', payload)      
       setMessage(payload);
-      console.log(payload)
     } catch (error) {
       toast({
         title: 'Error',
-        description: 'Cannot fetch the messages',
+        description: error.message,
         status: 'error',
         duration: 5000,
         isClosable: true,
@@ -86,7 +110,6 @@ function Chat({ rooms }) {
             </Box>
             {/* Render the sidebar components */}
             <Sidebar rooms={rooms} />
-            {/* { useChat && <Mychats/>} */}
           </Box>
         </Box>
 
@@ -95,20 +118,15 @@ function Chat({ rooms }) {
           <Box className="message-box">
             <Text className="messages-label">Messages</Text>
             {/* Messages go here */}
-
-            {/* Form for Typing Messages and Send Button */}
-            <form className="message-form" onSubmit={handleSendMessage}>
-              <Input
-                type="text"
-                placeholder="Type your message..."
-                value={newMessage}
-                onChange={(e) => setNewMessage(e.target.value)}
-                className="message-input"
-              />
+            <form className="message-form" onSubmit={(e) => {
+              e.preventDefault();
+              console.log('Form submitted', selectedChat);
+              handleSendMessage();
+              }}>
               <Button type="submit" colorScheme="blue" className="send-button">
                 Send
               </Button>
-            </form>
+              </form>
           </Box>
         </Box>
       </Flex>
