@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import {
   Box,
   Flex,
-  Input,
   Button,
   Text,
   Heading,
   useToast,
+  Input
 } from '@chakra-ui/react';
 import './Chat.css';
 import { useChat } from '../ChatContext';
@@ -28,30 +28,25 @@ function Chat({ rooms }) {
 
 
   const handleSendMessage = async () => {
-    console.log('Selected Chat in handleSendMessage:', selectedChat);
     try {
-      if (!selectedChat?.data?._id) {
-        console.log('Chat ID is undefined', selectedChat);
-        throw new Error('Selected chat or chat ID is undefined');
-      }
-
-      console.log('Sending Message to Chat ID', selectedChat.data._id)
-
       const config = {
         headers: {
-          'Content-type': 'application/json',
+          'Content-Type': 'application/json',
         },
       };
-      
-      const { data } = await customAxios.post('/msgs/send', {
+      const { data } = await customAxios.post('/msgs/send',
+      {
         content: newMessage,
-        chatId: selectedChat.data._id,
+        chatId: selectedChat._id,
       }, config);
+
+      console.log(data);
+      
       setNewMessage('');
       setMessage((prevMessages) => [...prevMessages, data]);
-
+  
     } catch (error) {
-      console.log('Error in handleSendMessage', error)
+      console.error('Error in handleSendMessage:', error);
       toast({
         title: 'Error',
         description: `Cannot create the messages: ${error.message}`,
@@ -118,17 +113,20 @@ function Chat({ rooms }) {
           <Box className="message-box">
             <Text className="messages-label">Messages</Text>
             {/* Messages go here */}
-            <form className="message-form" onSubmit={(e) => {
-              e.preventDefault();
-              console.log('Form submitted', selectedChat);
-              handleSendMessage();
-              }}>
+            <form className="message-form" onSubmit={handleSendMessage}>
+              <Input
+                type="text"
+                placeholder="Type your message..."
+                value={newMessage}
+                onChange={(e) => setNewMessage(e.target.value)}
+                className="message-input"
+              />
               <Button type="submit" colorScheme="blue" className="send-button">
                 Send
               </Button>
-              </form>
+            </form>
           </Box>
-        </Box>
+        </Box>]
       </Flex>
     </Flex>
   );

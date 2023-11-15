@@ -3,6 +3,7 @@ const User = require("../models/UserModel")
 const Chat = require("../models/ChatModel")
 
 exports.sendMessage = async (req, res) => {
+  
   const {content, chatId} = req.body;
   if (!content || !chatId){
     res.status(500).json({ error: 'Invalid data passed into request' });
