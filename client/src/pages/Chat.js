@@ -4,7 +4,6 @@ import {
   Flex,
   Button,
   Text,
-  Heading,
   useToast,
   Input
 } from '@chakra-ui/react';
@@ -12,44 +11,52 @@ import './Chat.css';
 import { useChat } from '../ChatContext';
 import Sidebar from '../components/Sidebar';
 import customAxios from '../axiosUser';
+import './text.css';
+import ScrollingChats from '../components/ScrollingChats';
+import io from 'socket.io-client';
+
+const API_URL = "http://localhost:3330";
 
 function Chat({ rooms }) {
   const [newMessage, setNewMessage] = useState('');
-  const [message, setMessage] = useState([]);
+  const [messages, setMessages] = useState([]);
   const toast = useToast();
-  const { selectedChat} = useChat();
+  const { user, selectedChat } = useChat();
+
+  const socket = io(API_URL);
 
   useEffect(() => {
-    console.log('Selected Chat in useEffect:', selectedChat);
-    if (selectedChat && selectedChat.data && selectedChat.data._id) {
-      fetchMessages();
-    }
-  }, [selectedChat]);
+    socket.emit('setup', user.user);
 
+    socket.on('message recieved', (newMessageReceived) => {
+      setMessages((prevMessages) => [...prevMessages, newMessageReceived]);
+    });
 
-  const handleSendMessage = async () => {
+    return () => {
+      socket.off('message recieved');
+      socket.disconnect();
+    };
+  }, [socket, user.user]);
+
+  const fetchMessages = async () => {
     try {
+      if (!selectedChat || !selectedChat._id) {
+        return;
+      }
+
       const config = {
         headers: {
-          'Content-Type': 'application/json',
+          'Content-type': 'application/json',
         },
       };
-      const { data } = await customAxios.post('/msgs/send',
-      {
-        content: newMessage,
-        chatId: selectedChat._id,
-      }, config);
+      const { data } = await customAxios.get(`/msgs/allMessages/${selectedChat._id}`, config);
 
-      console.log(data);
-      
-      setNewMessage('');
-      setMessage((prevMessages) => [...prevMessages, data]);
-  
+      setMessages(data);
+      socket.emit('join chat', selectedChat._id);
     } catch (error) {
-      console.error('Error in handleSendMessage:', error);
       toast({
         title: 'Error',
-        description: `Cannot create the messages: ${error.message}`,
+        description: `Error fetching the messages: ${error.message}`,
         status: 'error',
         duration: 5000,
         isClosable: true,
@@ -63,32 +70,37 @@ function Chat({ rooms }) {
     }
   }, [selectedChat]);
 
-  const fetchMessages = async () => {
+  const handleSendMessage = async (event) => {
+    event.preventDefault();
+  
     try {
-      console.log('Selected Chat fetch msg', selectedChat)
-      
-      if (!selectedChat || !selectedChat.data || !selectedChat.data._id) {
-        throw new Error('Selected chat or chat ID is undefined');
-      }
-
       const config = {
         headers: {
-          'Content-type': 'application/json',
+          'Content-Type': 'application/json',
         },
       };
-      const { payload } = await customAxios.get(`/msgs/allMessages/${selectedChat.data._id}`, config);
-      console.log('Messages is', payload)      
-      setMessage(payload);
+      const { data } = await customAxios.post('/msgs/send', {
+        content: newMessage,
+        chatId: selectedChat._id,
+      }, config);
+      console.log(data)
+  
+      setMessages((prevMessages) => [...prevMessages, data]);
+  
+      socket.emit('send message', data);
+      setNewMessage('');
     } catch (error) {
+      console.error('Error in handleSendMessage:', error);
       toast({
         title: 'Error',
-        description: error.message,
+        description: `Cannot create the message: ${error.message}`,
         status: 'error',
         duration: 5000,
         isClosable: true,
       });
     }
   };
+  
 
   return (
     <Flex
@@ -97,12 +109,8 @@ function Chat({ rooms }) {
     >
       <Flex className="full-height">
         {/* Left Border for Chat Names (1/4) */}
-        <Box w="25%" className="border-right" borderRight="1px solid gray">
+        <Box w="25%" className="border-right" borderRight="1px solid gray" rounded="10">
           <Box className="chat-names">
-            <Box className="chat-name-header">
-              <Heading as="h4">Find Friends</Heading>
-              <i className="bi bi-arrow-right-circle"></i>
-            </Box>
             {/* Render the sidebar components */}
             <Sidebar rooms={rooms} />
           </Box>
@@ -110,9 +118,11 @@ function Chat({ rooms }) {
 
         {/* Right Border for Messages (3/4) */}
         <Box w="75%">
-          <Box className="message-box">
+          <Box className="message-box" rounded="10">
             <Text className="messages-label">Messages</Text>
-            {/* Messages go here */}
+            <div className="messages-text">
+              <ScrollingChats message={messages}/>
+            </div>
             <form className="message-form" onSubmit={handleSendMessage}>
               <Input
                 type="text"
@@ -126,7 +136,7 @@ function Chat({ rooms }) {
               </Button>
             </form>
           </Box>
-        </Box>]
+        </Box>
       </Flex>
     </Flex>
   );

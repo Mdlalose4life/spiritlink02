@@ -12,21 +12,21 @@ const protect = async (req, res, next) => {
 
     if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
       token = req.headers.authorization.split(' ')[1];
-      console.log('Token:', token);
+      //console.log('Token:', token);
 
       // Verify and decode the token
       const decoded = jwt.verify(token, secretKey);
-      console.log('Decoded Token:', decoded);
+      //console.log('Decoded Token:', decoded);
 
       // Find the user associated with the decoded ID
       req.user = await User.findById(decoded.userId).select('-password');
-      console.log('User:', req.user);
+      //console.log('User:', req.user);
 
       if (!req.user) {
         return res.status(401).json({ error: 'User not found' });
       }
 
-      console.log('Authentication successful'); // Add this line for debugging
+      //console.log('Authentication successful');
 
       next();
     } else {

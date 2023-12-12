@@ -1,6 +1,5 @@
 import React from 'react';
 import { Box, Button, Heading, Text } from '@chakra-ui/react';
-import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import backgroundImage from '../assets/neon.jpg';
 

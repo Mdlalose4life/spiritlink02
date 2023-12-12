@@ -60,9 +60,10 @@ exports.LoginUser = async (req, res) => {
     if (passwordMatch){
       // Genarate a JWT token
       const token = jwt.sign({ userId: user._id }, secretKey);
+
       
       // send the token to the client
-      res.status(200).json({ message: 'Authentication succeful', token })
+      res.status(200).json({ message: 'Authentication succeful', user, token })
     } else {
       res.status(401).json({ message: 'Authentication failed' });
     }

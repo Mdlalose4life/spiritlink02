@@ -38,7 +38,7 @@ function Login() {
         password,
       });
 
-      console.log('Login response', response.data);
+      //console.log('Login response', response.data);
       toast({
         title: 'Logged in successfully',
         description: 'Logged in successfully',
@@ -48,6 +48,7 @@ function Login() {
       });
 
       // Navigate to the chat page upon successful login
+      localStorage.setItem('userInfo', JSON.stringify(response.data))
       navigate('/chat');
 
     } catch (error) {

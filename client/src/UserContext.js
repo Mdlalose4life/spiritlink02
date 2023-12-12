@@ -15,9 +15,9 @@ export function UserProvider({ children }) {
         try { 
             //Using axios, to send the information to the backend.
             const response = await customAxios.post('user/login', userData)
-            setUser(response.user);
+            setUser(response.data.user);
             // Stores the token to the local storage
-            localStorage.setItem('UserToken', response.data.token);  
+            localStorage.setItem('UserToken', response.data.token);
         } catch (error) {
             // Handle login errors
             console.error('Login failed', error);

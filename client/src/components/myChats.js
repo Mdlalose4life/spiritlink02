@@ -10,9 +10,8 @@ const Mychats = () => {
   useEffect(() => {
     const getChat = async () => {
       try {
-        const response = await customAxios.get('/chat/getChat');
-        const { payload } = response.data;
-        setChats(payload);
+        const data = await customAxios.get('/chat/getChat');
+        setChats(data);
       } catch (error) {
         console.error(error);
         toast({

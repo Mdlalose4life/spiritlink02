@@ -47,8 +47,8 @@ function Sidebar() {
         },
       };
       const { data } = await customAxios.post('/chat/accessChat', { userId }, config);
-      console.log('Access Chat data:', data);
-      console.log('Chat ID:', data._id);
+      //console.log('Access Chat data:', data);
+      //console.log('Chat ID:', data._id);
       setSelectedChat(data);
       toast({
         title: 'Chat Selected',
@@ -62,9 +62,8 @@ function Sidebar() {
     }
   };
 
-  console.log('Chats:', chats);
   return (
-    <Box p={4}>
+    <Box p={1}>
       <Heading size="md" mt={4} mb={2}>
         Chats
       </Heading>

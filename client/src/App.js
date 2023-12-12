@@ -13,7 +13,7 @@ import Sidebar from './components/Sidebar';
 
 function App() {
   return (
-    <BrowserRouter>
+  <BrowserRouter>
     <UserProvider>
       <ChatProvider>
         <Navigation />
@@ -25,8 +25,8 @@ function App() {
             <Route path="/Sidebar" element={<Sidebar />} />            
             </Routes>
       </ChatProvider>
-      </UserProvider>
-    </BrowserRouter>
+    </UserProvider>
+  </BrowserRouter>
   );
 }
 
