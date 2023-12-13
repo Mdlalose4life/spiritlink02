@@ -20,8 +20,8 @@ function ScrollingChats({ message }) {
                   borderRadius: '20px',
                   padding: '5px 15px',
                   maxWidth: '75%',
+                  marginLeft: isSameSenderMargin(message, currentmessage, index, user.user._id),                  
                   marginTop: isSameUser(message, currentmessage, index, user.user._id) ? 3 : 10,
-                  marginLeft: isSameSenderMargin(message, currentmessage, index, user.user._id),
                 }}
               >
                 {currentmessage.content}

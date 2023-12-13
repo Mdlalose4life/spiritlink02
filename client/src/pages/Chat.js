@@ -51,7 +51,7 @@ function Chat({ rooms }) {
       };
 
       const { data } = await customAxios.get(`/msgs/allMessages/${selectedChat._id}`, config)
-      console.log(data);
+      //console.log(data);
       setMessages(data);
       socket.emit('join chat', selectedChat._id);
 
@@ -67,9 +67,9 @@ function Chat({ rooms }) {
   };
 
   useEffect(() => {
-    console.log("Selected Chat:", selectedChat._id);
+    //console.log("Selected Chat:", selectedChat._id);
     if (selectedChat?._id) {
-      console.log("Fetching messages...");
+      //console.log("Fetching messages...");
       fetchMessages();
     }
   }, [selectedChat]);
@@ -87,7 +87,7 @@ function Chat({ rooms }) {
         content: newMessage,
         chatId: selectedChat._id,
       }, config);
-      console.log(data)
+      //console.log(data)
   
       setMessages((prevMessages) => [...prevMessages, data]);
   
