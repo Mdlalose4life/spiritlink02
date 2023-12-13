@@ -49,10 +49,12 @@ function Chat({ rooms }) {
           'Content-type': 'application/json',
         },
       };
-      const { data } = await customAxios.get(`/msgs/allMessages/${selectedChat._id}`, config);
 
+      const { data } = await customAxios.get(`/msgs/allMessages/${selectedChat._id}`, config)
+      console.log(data);
       setMessages(data);
       socket.emit('join chat', selectedChat._id);
+
     } catch (error) {
       toast({
         title: 'Error',
@@ -65,7 +67,9 @@ function Chat({ rooms }) {
   };
 
   useEffect(() => {
-    if (selectedChat?.data?._id) {
+    console.log("Selected Chat:", selectedChat._id);
+    if (selectedChat?._id) {
+      console.log("Fetching messages...");
       fetchMessages();
     }
   }, [selectedChat]);
@@ -100,7 +104,6 @@ function Chat({ rooms }) {
       });
     }
   };
-  
 
   return (
     <Flex
@@ -120,7 +123,7 @@ function Chat({ rooms }) {
         <Box w="75%">
           <Box className="message-box" rounded="10">
             <Text className="messages-label">Messages</Text>
-            <div className="messages-text">
+            <div className="message-text">
               <ScrollingChats message={messages}/>
             </div>
             <form className="message-form" onSubmit={handleSendMessage}>

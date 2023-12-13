@@ -15,12 +15,12 @@ function ScrollingChats({ message }) {
               <span
                 style={{
                   backgroundColor: `${
-                    currentmessage.sender._id === user.user?._id ? "#427898" : "#7E57C2"
+                    currentmessage.sender._id === user.user?._id ? "#7E57C2" : "#427898"
                   }`,
                   borderRadius: '20px',
                   padding: '5px 15px',
                   maxWidth: '75%',
-                  marginTop: isSameUser(message, currentmessage, index, user.user._id) ? 3 : 10,      
+                  marginTop: isSameUser(message, currentmessage, index, user.user._id) ? 3 : 10,
                   marginLeft: isSameSenderMargin(message, currentmessage, index, user.user._id),
                 }}
               >
