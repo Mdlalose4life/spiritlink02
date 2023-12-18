@@ -8,11 +8,11 @@ import {
   Input
 } from '@chakra-ui/react';
 import './Chat.css';
-import { useChat } from '../ChatContext';
-import Sidebar from '../components/Sidebar';
-import customAxios from '../axiosUser';
+import { useChat } from './ChatStates/ChatContext';
+import Sidebar from './ChatSidebar/Sidebar';
+import customAxios from '../User/customAxios/axiosUser';
 import './text.css';
-import ScrollingChats from '../components/ScrollingChats';
+import ScrollingChats from './ChatScrolling/ScrollingChats';
 import io from 'socket.io-client';
 
 const API_URL = "http://localhost:3330";

@@ -1,7 +1,9 @@
 import React from 'react';
 import { Box, Button, Heading, Text } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
-import backgroundImage from '../assets/neon.jpg';
+import backgroundImage from '../../assets/neon.jpg';
+import Navigation from '../../components/Home/Header/Navigation'
+
 
 function Home() {
   const navigate = useNavigate();
@@ -21,6 +23,7 @@ function Home() {
       height="100vh"
       color="white"
     >
+      <Navigation />
       <Heading as="h1" size="xl" py="16" color="#187bcd">
         Welcome to SpiritLink
       </Heading>

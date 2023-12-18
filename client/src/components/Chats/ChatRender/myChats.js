@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useToast } from "@chakra-ui/react";
-import { useChat } from '../ChatContext';
-import customAxios from '../axiosUser';
+import { useChat } from '../ChatStates/ChatContext';
+import customAxios from '../../../axiosUser';
 
 const Mychats = () => {
   const { setChats } = useChat();
@@ -26,7 +26,6 @@ const Mychats = () => {
     
     getChat();
   }, [setChats, toast]);
-
 }
 
 export default Mychats;

@@ -14,14 +14,14 @@ import {
   CircularProgressLabel
 } from '@chakra-ui/react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useUserContext } from '../UserContext';
-import customAxios from '../axiosUser';
+import { useUserContext } from '../UserStates/UserContext';
+import customAxios from '../customAxios/axiosUser';
 
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { LoginUser } = useUserContext();
-  const [error, setError] = useState('');
+  const [error] = useState('');
   const toast = useToast();
   const navigate = useNavigate();  
   const [isLoading, setIsLoading] = useState(false);

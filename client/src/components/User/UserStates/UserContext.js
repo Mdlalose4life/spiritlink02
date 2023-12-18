@@ -1,5 +1,5 @@
 import { createContext, useContext, useState } from 'react';
-import customAxios from './axiosUser'
+import customAxios from '../customAxios/axiosUser'
 
 const UserContext = createContext();
 

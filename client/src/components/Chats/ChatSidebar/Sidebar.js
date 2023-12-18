@@ -6,8 +6,8 @@ import {
   ListItem,
   useToast,
 } from '@chakra-ui/react';
-import customAxios from '../axiosUser';
-import { useChat } from '../ChatContext';
+import customAxios from '../../User/customAxios/axiosUser';
+import { useChat } from '../ChatStates/ChatContext';
 
 function Sidebar() {
   const toast = useToast();
@@ -47,7 +47,7 @@ function Sidebar() {
         },
       };
       const { data } = await customAxios.post('/chat/accessChat', { userId }, config);
-      //console.log('Access Chat data:', data);
+      console.log('Access Chat data:', data);
       //console.log('Chat ID:', data._id);
       setSelectedChat(data);
       toast({

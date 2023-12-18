@@ -8,7 +8,7 @@ import {
   HStack,
 } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
-import logo from '../assets/sbu.png';
+import logo from '../../../assets/sbu.png';
 
 function Navigation() {
   return (

@@ -12,10 +12,8 @@ import {
   useToast
  } from '@chakra-ui/react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useUserContext } from '../UserContext';
-import customAxios from '../axiosUser';
-
-
+import { useUserContext } from '../UserStates/UserContext';
+import customAxios from '../customAxios/axiosUser';
 
 function Signup() {
   const toast = useToast();
