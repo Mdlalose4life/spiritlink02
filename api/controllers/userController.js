@@ -2,6 +2,7 @@ const User = require('../models/UserModel');
 const dotenv = require('dotenv');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const TokenBlackList = require('../models/TokenBlacklist')
 
 dotenv.config()
 
@@ -42,7 +43,6 @@ exports.registerUser = async (req, res) => {
 
 exports.LoginUser = async (req, res) => {
   try{
-    // Logic for login
     // extract email and password from the request body
     const { email, password } = req.body;
 
@@ -58,18 +58,25 @@ exports.LoginUser = async (req, res) => {
     const passwordMatch = await bcrypt.compare(password, user.password);
 
     if (passwordMatch){
-      // Genarate a JWT token
-      const token = jwt.sign({ userId: user._id }, secretKey);
+      // Check if the token is on the blackList
+      const tokenExistInBlackList = await TokenBlackList.findOne({ token: req.headers.authorization.split(' ')[1] });
 
-      
-      // send the token to the client
-      res.status(200).json({ message: 'Authentication succeful', user, token })
+      if (tokenExistInBlackList){
+        // If it exists, create a new Token
+        const newToken = jwt.sign({userId: user._id}, secretKey);
+
+        // then send a respond
+        return res.status(200).json({message: 'New Token generated', user, token: newToken});
+      }
+      // If the token is valid, send the response.
+      const token = jwt.sign({ userId: user._id }, secretKey);
+      return res.status(200).json({message: 'Authentication successful', user, token});
     } else {
-      res.status(401).json({ message: 'Authentication failed' });
-    }
+      res.status(401).json({ message: 'Authentication failed' })
+    };
   } catch(error) {
-    console.log(error);
-    res.status(500).json({ message: 'An error occured during the login' });
+    console.error(error);
+    res.status(500).json({message: 'An error has occured during the login'})
   }
 };
 
@@ -83,4 +90,17 @@ exports.getAllUsers = async (req, res) => {
     console.error(error);
     res.status(500).json({ message: 'An error occurred while fetching users.' });
   }  
+};
+exports.logoutUser = async (req, res) => {
+  try {
+    const token = req.headers.authorization.split(' ')[1];
+    //console.log(token)
+    const blackListedToken = new TokenBlackList({ token });
+    await blackListedToken.save();
+
+    res.status(200).json({ message: 'Logout successful' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'An error occurred during logout.' });
+  }
 };

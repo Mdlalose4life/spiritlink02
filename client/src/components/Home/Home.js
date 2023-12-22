@@ -7,7 +7,6 @@ import Navigation from '../../components/Home/Header/Navigation'
 
 function Home() {
   const navigate = useNavigate();
-
   const handleGetStartedClick = () => {
     navigate('/Signup');
   };

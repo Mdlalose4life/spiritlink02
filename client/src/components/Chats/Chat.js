@@ -11,6 +11,7 @@ import './Chat.css';
 import { useChat } from './ChatStates/ChatContext';
 import Sidebar from './ChatSidebar/Sidebar';
 import customAxios from '../User/customAxios/axiosUser';
+import Logout from '../User/UserLogout/Logout';
 import './text.css';
 import ScrollingChats from './ChatScrolling/ScrollingChats';
 import io from 'socket.io-client';
@@ -117,12 +118,21 @@ function Chat({ rooms }) {
             {/* Render the sidebar components */}
             <Sidebar rooms={rooms} />
           </Box>
-        </Box>
+          <Box position="absolute" bottom="0">
+            <Logout/>
+          </Box>
+      </Box>
 
         {/* Right Border for Messages (3/4) */}
         <Box w="75%">
           <Box className="message-box" rounded="10">
-            <Text className="messages-label">Messages</Text>
+            <Text className="messages-label">
+            {selectedChat?.users && selectedChat.users.length > 1 &&
+            (selectedChat.users[0]._id === user.user._id
+            ? selectedChat.users[1].username
+            : selectedChat.users[0].username)
+            }
+            </Text>
             <div className="message-text">
               <ScrollingChats message={messages}/>
             </div>

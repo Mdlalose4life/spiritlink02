@@ -5,7 +5,7 @@ import {
   FormControl, 
   FormErrorMessage, 
   FormLabel, 
-  Input, 
+  Input,
   Stack, 
   Text, 
   Link as ChakraLink,
@@ -38,7 +38,7 @@ function Login() {
         password,
       });
 
-      //console.log('Login response', response.data);
+      console.log('Login response', response.data);
       toast({
         title: 'Logged in successfully',
         description: 'Logged in successfully',
@@ -70,7 +70,7 @@ function Login() {
   }
 
   return (
-    <Container maxW="container.sm">
+    <Container maxW="container.sm" marginTop='100'>
       <form onSubmit={loginHandler}>
         <Stack spacing={4} py={6}>
           <FormControl isRequired isInvalid={error}>

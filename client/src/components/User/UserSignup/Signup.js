@@ -38,7 +38,7 @@ function Signup() {
         confirmpassword,
         accesslink,
       });
-      console.log('Signup response', response.data);
+      //console.log('Signup response', response.data);
       SignupUser(response.user);
       navigate('/chat');
       toast({
