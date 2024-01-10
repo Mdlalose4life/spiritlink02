@@ -46,36 +46,37 @@ app.use('/chat', chatRoutes);
 
 // Socket.io logic
 io.on('connection', (socket) => {
-    //console.log('Connected to socket.io');
-    socket.on('setup', (userData) =>{
-      socket.join(userData._id)
-      //console.log('The user Id Connected', userData._id)
-      socket.emit("connection")
-    })
-
-    socket.on('join chat', (room)=>{
-      socket.join(room);
-      //console.log('User joined room ' + room);
-    });
-
-    socket.on('send message', (newMessageRecieved) => {
-      var chat = newMessageRecieved.chat
+  //console.log('Connected to socket.io');
+  socket.on('setup', (userData) => {
+    //console.log('user data is', userData)
+    socket.join(userData._id)
+    //console.log('The user Id Connected', userData._id)
+    socket.emit('connection')
+  })
+  
+  socket.on('join chat', (room)=>{
+    socket.join(room);
+    //console.log('User joined room ' + room);
+  });
+  
+  socket.on('send message', (newMessageRecieved) => {
+    var chat = newMessageRecieved.chat
       
-      //console.log(newMessageRecieved)
-      if (!chat || !chat.users) {
-        console.log("Chat or chat.users not defined");
-        return;
-      }
+    console.log(newMessageRecieved)
+    if (!chat || !chat.users) {
+      console.log("Chat or chat.users not defined");
+       return;
+    }
   
-      if (!chat.users) return console.log("chat user not defined");
+    if (!chat.users) return console.log("chat user not defined");
   
-      chat.users.forEach(user => {
-        if(user._id == newMessageRecieved.sender._id) return;
-        socket.in(user._id).emit("message recieved", newMessageRecieved)
+    chat.users.forEach(user => {
+      if(user._id == newMessageRecieved.sender._id) return;
+      socket.in(user._id).emit("message recieved", newMessageRecieved)
 
-      });
     });
   });
+});
 // Root route 
 app.get('/', (req, res) => {
   res.send('The backend server');

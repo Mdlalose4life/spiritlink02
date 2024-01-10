@@ -8,14 +8,10 @@ export const ChatProvider = ({ children }) => {
   const [selectedChat, setSelectedChat] = useState({});
   const [chats, setChats] = useState([]);
   const navigate = useNavigate();
-
+  
   useEffect(() => {
-    const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-    setUser(userInfo);
-    //console.log("userInfo", userInfo)
-    if (!userInfo){
-    //navigate.push('/')
-    }
+    const userInfo = JSON.parse(localStorage.getItem('userInfo'))
+    setUser(userInfo)
   }, [navigate])
 
   useEffect(() =>{

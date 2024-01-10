@@ -29,11 +29,72 @@
   padding: 5px 10px;
   font-weight: bold;
   text-align: center;
+  font-family:'Courier New', Courier, monospace;
 }
 
 .message-box {
   padding: 7px;
   background-color: rgb(149, 163, 183);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.message-form {
+  margin-top: 10px;
+  display: flex;
+  color:lightblue;
+}
+
+.message-input {
+  flex: 1;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.send-button {
+  margin-left: 10px;
+  border-radius: 10px;
+}
+/* Chat.css */
+
+.full-height {
+  height: 99vh;
+  border: 2px solid lightgray;
+  border-radius: 3px;
+}
+
+.border-right {
+  background: rgb(3, 26, 59);
+}
+
+.chat-names {
+  padding: 20px;
+  max-height: calc(82vh - 30px);
+  overflow-y: auto;
+}
+
+.chat-name-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.messages-label {
+  background-color: #007bff;
+  color: #fff;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+  padding: 5px 10px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.message-box {
+  padding: 7px;
+  background-color: rgb(3, 26, 59);
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -54,4 +115,5 @@
 .send-button {
   margin-left: 10px;
   border-radius: 10px;
+  position: relative;
 }

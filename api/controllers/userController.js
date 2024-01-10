@@ -12,6 +12,7 @@ const secretKey = process.env.JWT_SECRET_KEY;
 // Registration
 exports.registerUser = async (req, res) => {
   try{
+    //console.log("I am called")
     // Logic for registering the new user
     const { username, email, password, confirmpassword, accesslink } = req.body;
   
@@ -43,11 +44,13 @@ exports.registerUser = async (req, res) => {
 
 exports.LoginUser = async (req, res) => {
   try{
+    //console.log("Execution")
     // extract email and password from the request body
     const { email, password } = req.body;
 
     // find the user by email
     const user = await User.findOne({ email });
+    //console.log(user)
 
     // Say it if the user is not found
     if (!user) {

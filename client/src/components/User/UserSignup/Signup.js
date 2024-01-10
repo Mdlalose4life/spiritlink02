@@ -26,7 +26,6 @@ function Signup() {
   const [accesslink, setAccessLink] = useState('');
   const [error] = useState('');
   const {SignupUser} = useUserContext();
-
   
   async function signupHandler(ev) {
     ev.preventDefault();

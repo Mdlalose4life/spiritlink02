@@ -1,38 +1,37 @@
 import React, { useState, useEffect } from 'react';
 import {
   Box,
-  Heading,
   List,
   ListItem,
   useToast,
-  Text
+  Text,
 } from '@chakra-ui/react';
 import customAxios from '../../User/customAxios/axiosUser';
 import { useChat } from '../ChatStates/ChatContext';
-
+import { Image } from '@chakra-ui/react'
+import icon from '../../../assets/User.png'
+import Chatloader from '../ChatLoaders/chatloader'
 
 function Sidebar() {
   const toast = useToast();
   const rooms = ['Groups', 'private chat'];
   const [allUsers, setAllUsers] = useState([]);
-  const { selectedChat ,setSelectedChat, chats } = useChat();
+  const {selectedChat, setSelectedChat, chats } = useChat();
+  const [isLoading, setIsLoading] = useState();
 
   useEffect(() => {
+
+    setIsLoading(true)
+
     const fetchUsers = async () => {
       try {
         const response = await customAxios.get('/user/getAllUsers');
         const fetchedUsers = response.data;
         setAllUsers(fetchedUsers);
-
-        toast({
-          title: 'Talk to friends',
-          description: 'Say Hi to your friends',
-          status: 'success',
-          duration: 5000,
-          isClosable: true,
-        });
       } catch (error) {
         console.error(error);
+      } finally {
+        setIsLoading(false)
       }
     };
 
@@ -53,13 +52,6 @@ function Sidebar() {
       //console.log('Chat ID:', data._id);
       setSelectedChat(data);
       //console.log(selectedChat)
-      toast({
-        title: 'Chat Selected',
-        description: 'Chat accessed',
-        status: 'success',
-        duration: 5000,
-        isClosable: true,
-      })
     } catch (error) {
       console.error(error);
     }
@@ -67,45 +59,59 @@ function Sidebar() {
 
   return (
     <Box p={1} display="flex" flexDirection="column" height="100%" >
-      <Box flex="1">
-      <Heading size="md" mt={4} mb={2}>
-        Chats
-      </Heading>
-      <List spacing={2}>
-        {allUsers.map((user) => (
-          <ListItem
-            key={user._id}
-            cursor="pointer"
-            bg={
-              chats?.some((chat) => chat?.members?.includes(user._id))
-                ? '#38B2AC'
-                : 'blue.200'
-            }
-            _hover={{
-              background: '#38B2AC',
-              color: 'black',
-            }}
-            w="100%"
-            d="flex"
-            alignItems="center"
-            color="black"
-            px={3}
-            py={2}
-            mb={2}
-            borderRadius="lg"
-            onClick={() => {
-              accessChat(user._id);
-            }}
-          >
-          <Box>
-            <Text>{user.username}</Text>
-            <Text fontSize="xs" fontWeight="bold">
-              {user.status}</Text>
-          </Box>
-          </ListItem>
-        ))}
-      </List>
-      </Box>
+      <>
+      {isLoading ? (
+        <Chatloader/>
+      ):(
+        <Box flex="1">
+        <List spacing={2}>
+          {allUsers.map((user) => (
+            <ListItem
+              key={user._id}
+              cursor="pointer"
+              bg={
+                selectedChat && selectedChat.users && selectedChat.users.some((chatUser) => chatUser._id === user._id)
+                  ? '#427898'
+                  : 'blue.200'
+              }
+              _hover={{
+                background: '#427898',
+                color: 'black',
+              }}
+              w="100%"
+              d="flex"
+              alignItems="center"
+              color="black"
+              px={3}
+              py={2}
+              mb={2}
+              borderRadius="lg"
+              onClick={() => {
+                accessChat(user._id);
+              }}
+            >
+              <Box display="flex" alignItems="center">
+                <Box marginRight={4}>
+                  <Image
+                    borderRadius='full'
+                    boxSize='50px'
+                    src={icon}
+                    alt="User Profile"
+                  />
+                </Box>
+                <Box display="flex" flexDirection="column">
+                  <Text>{user.username}</Text>
+                  <Text fontSize="xs" fontWeight="bold">
+                    {user.status}
+                  </Text>
+                </Box>
+              </Box>
+            </ListItem>
+          ))}
+        </List>
+        </Box>
+      )}
+      </>
     </Box>
     
   );

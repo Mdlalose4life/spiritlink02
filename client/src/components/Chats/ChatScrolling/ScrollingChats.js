@@ -1,12 +1,20 @@
-import React from 'react';
-import ScrollableFeed from 'react-scrollable-feed';
+import React, {useRef, useEffect} from 'react';
 import { useChat } from '../ChatStates/ChatContext';
 import { isSameSenderMargin, isSameUser } from '../ChatLogics/ChatLogic';
 
+
 function ScrollingChats({ message }) {
   const { user } = useChat();
+  const ChatRef = useRef(null);
+
+  useEffect(()=> {
+    if (ChatRef.current){
+      ChatRef.current.scrollTop = ChatRef.current.scrollHeight;
+    }
+  }, [message])
+
   return (
-    <ScrollableFeed>
+    <div style={{ maxHeight: 'calc(89vh - 40px)', overflowY:'auto' }} ref={ChatRef}>
       {message &&
         message.map((currentmessage, index) => (
         <div style={{ display: 'flex' }} key={`${currentmessage._id}_${index}`}>
@@ -15,13 +23,13 @@ function ScrollingChats({ message }) {
               <span
                 style={{
                   backgroundColor: `${
-                    currentmessage.sender._id === user.user?._id ? "#7E57C2" : "#427898"
+                    currentmessage.sender._id === user?._id ? "#7E57C2" : "#427898"
                   }`,
                   borderRadius: '20px',
                   padding: '5px 15px',
                   maxWidth: '75%',
-                  marginLeft: isSameSenderMargin(message, currentmessage, index, user.user._id),                  
-                  marginTop: isSameUser(message, currentmessage, index, user.user._id) ? 3 : 10,
+                  marginLeft: isSameSenderMargin(message, currentmessage, index, user._id),                  
+                  marginTop: isSameUser(message, currentmessage, index, user._id) ? 3 : 10,
                 }}
               >
                 {currentmessage.content}
@@ -31,7 +39,7 @@ function ScrollingChats({ message }) {
             )}
           </div>
         ))}
-    </ScrollableFeed>
+    </div>
   );
 }
 

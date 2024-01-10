@@ -12,27 +12,16 @@ export function UserProvider({ children }) {
     const [ user, setUser ] = useState(null)
 
     async function LoginUser(userData) {
-        try { 
-            //Using axios, to send the information to the backend.
-            const response = await customAxios.post('user/login', userData)
-            setUser(response.data.user);
-            // Stores the token to the local storage
-            localStorage.setItem('UserToken', response.data.token);
-        } catch (error) {
-            // Handle login errors
-            console.error('Login failed', error);
-        }
+        //console.log('userData', userData)
+        //console.log('userData.user', userData.user)
+        setUser(userData.user);
+        localStorage.setItem('UserToken', userData.token);
+        
     };
 
-    async function SignupUser(userData){
-        try {
-            const response = await customAxios.post('user/register', userData);
-            setUser(response.user);
-            // Stor the user token on the local state.
-            localStorage.setItem('UserToken', response.data.token)
-        } catch (error) {
-            console.error('Signup fail', error);
-        }
+    async function SignupUser(userData) {
+        setUser(userData.user);
+        localStorage.setItem('UserToken', userData.token)
     }
 
     async function logoutUser(){

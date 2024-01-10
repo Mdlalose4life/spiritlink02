@@ -5,7 +5,8 @@ import {
   Button,
   Text,
   useToast,
-  Input
+  Input,
+  CircularProgress,
 } from '@chakra-ui/react';
 import './Chat.css';
 import { useChat } from './ChatStates/ChatContext';
@@ -15,19 +16,23 @@ import Logout from '../User/UserLogout/Logout';
 import './text.css';
 import ScrollingChats from './ChatScrolling/ScrollingChats';
 import io from 'socket.io-client';
+import logo from '../../assets/sbu.png'
+import { LuSendHorizonal } from "react-icons/lu";
 
 const API_URL = "http://localhost:3330";
 
 function Chat({ rooms }) {
   const [newMessage, setNewMessage] = useState('');
   const [messages, setMessages] = useState([]);
+  const [isLoading, setIsLoading] = useState(false)
   const toast = useToast();
   const { user, selectedChat } = useChat();
 
   const socket = io(API_URL);
 
   useEffect(() => {
-    socket.emit('setup', user.user);
+    //console.log('user is ', user)
+    socket.emit('setup', user);
 
     socket.on('message recieved', (newMessageReceived) => {
       setMessages((prevMessages) => [...prevMessages, newMessageReceived]);
@@ -37,13 +42,15 @@ function Chat({ rooms }) {
       socket.off('message recieved');
       socket.disconnect();
     };
-  }, [socket, user.user]);
+  }, [socket, user]);
 
   const fetchMessages = async () => {
     try {
       if (!selectedChat || !selectedChat._id) {
         return;
       }
+
+      setIsLoading(true)
 
       const config = {
         headers: {
@@ -64,12 +71,14 @@ function Chat({ rooms }) {
         duration: 5000,
         isClosable: true,
       });
+    } finally {
+      setIsLoading(false)
     }
-  };
+  }
 
   useEffect(() => {
-    //console.log("Selected Chat:", selectedChat._id);
-    if (selectedChat?._id) {
+    //console.log("Selected Chat: ", selectedChat);      
+    if (selectedChat && selectedChat?._id) {
       //console.log("Fetching messages...");
       fetchMessages();
     }
@@ -114,28 +123,47 @@ function Chat({ rooms }) {
       <Flex className="full-height">
         {/* Left Border for Chat Names (1/4) */}
         <Box w="25%" className="border-right" borderRight="1px solid gray" rounded="10">
+            <Box size="md" mt={4} mb={2}>
+              <img src={logo} alt="Logo" style={{ width: '170px', height: 'auto' }} />
+            </Box>
           <Box className="chat-names">
-            {/* Render the sidebar components */}
-            <Sidebar rooms={rooms} />
+            <Sidebar/>
           </Box>
           <Box position="absolute" bottom="0">
             <Logout/>
           </Box>
-      </Box>
+        </Box>
 
         {/* Right Border for Messages (3/4) */}
         <Box w="75%">
           <Box className="message-box" rounded="10">
             <Text className="messages-label">
             {selectedChat?.users && selectedChat.users.length > 1 &&
-            (selectedChat.users[0]._id === user.user._id
+            (selectedChat.users[0]._id === user._id
             ? selectedChat.users[1].username
             : selectedChat.users[0].username)
             }
             </Text>
-            <div className="message-text">
-              <ScrollingChats message={messages}/>
-            </div>
+            <Flex
+              justify="center"
+              align="center"
+              height="100%"
+            >
+            {isLoading ? (
+            <>
+                <CircularProgress
+                  isIndeterminate
+                  size="100px"
+                  color='blue.200'
+                  trackColor='transparent'
+                />
+            </>
+              ) : (
+                  <div className="message-text">
+                    <ScrollingChats message={messages}/>
+                  </div>           
+              )}
+            </Flex>
             <form className="message-form" onSubmit={handleSendMessage}>
               <Input
                 type="text"
@@ -144,9 +172,14 @@ function Chat({ rooms }) {
                 onChange={(e) => setNewMessage(e.target.value)}
                 className="message-input"
               />
-              <Button type="submit" colorScheme="blue" className="send-button">
-                Send
-              </Button>
+                <Button
+                  type='submit'
+                  colorScheme='blue'
+                  className='send-button'
+                  rightIcon={<LuSendHorizonal />}
+                >
+                  send
+                </Button>
             </form>
           </Box>
         </Box>

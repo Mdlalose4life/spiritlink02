@@ -8,6 +8,7 @@ const secretKey = process.env.JWT_SECRET_KEY;
 
 const protect = async (req, res, next) => {
   try {
+    //console.log("The Middleware")
     let token;
 
     if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {

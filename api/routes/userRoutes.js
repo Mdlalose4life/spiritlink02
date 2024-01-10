@@ -9,7 +9,7 @@ const TokenBlackListCheck = require('../middleware/TokenBlacklist')
 router.post('/register', userController.registerUser);
  
 // Login route
-router.post('/login', TokenBlackListCheck, userController.LoginUser);
+router.post('/login', protect, userController.LoginUser);
 
 // Logout rout
 router.post('/logout', protect, TokenBlackListCheck, userController.logoutUser);

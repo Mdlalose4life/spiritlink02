@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { 
-  Button, 
-  Container, 
+  Button,
   FormControl, 
   FormErrorMessage, 
   FormLabel, 
@@ -11,11 +10,16 @@ import {
   Link as ChakraLink,
   useToast,
   CircularProgress,
-  CircularProgressLabel
+  CircularProgressLabel,
+  Center,
+  Image,
+  Heading
 } from '@chakra-ui/react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useUserContext } from '../UserStates/UserContext';
 import customAxios from '../customAxios/axiosUser';
+import logo from '../../../assets/sbu.png'
+import './Login'
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -30,15 +34,20 @@ function Login() {
     ev.preventDefault();
 
     try {
+      //console.log("1.0. I get executed")
+      const config = {
+        headers:{
+          "Content-type": "application/json",          
+        }
+      };
       // Set loading state
       setIsLoading(true);
-
-      const response = await customAxios.post('/user/login', {
+      const { data } = await customAxios.post('user/login' ,{
         email,
         password,
-      });
+      }, config);
 
-      console.log('Login response', response.data);
+      LoginUser(data)
       toast({
         title: 'Logged in successfully',
         description: 'Logged in successfully',
@@ -48,7 +57,9 @@ function Login() {
       });
 
       // Navigate to the chat page upon successful login
-      localStorage.setItem('userInfo', JSON.stringify(response.data))
+      localStorage.setItem('UserToken', data.token);
+      console.log(data.user)
+      localStorage.setItem('userInfo', JSON.stringify(data.user));
       navigate('/chat');
 
     } catch (error) {
@@ -64,63 +75,81 @@ function Login() {
       // Reset loading state after login attempt
       setIsLoading(false);
     }
-
-    // Call LoginUser function if needed
-    await LoginUser({ email, password });
   }
 
   return (
-    <Container maxW="container.sm" marginTop='100'>
-      <form onSubmit={loginHandler}>
-        <Stack spacing={4} py={6}>
-          <FormControl isRequired isInvalid={error}>
-            <FormLabel>Email address</FormLabel>
-            <Input
-              type="email"
-              placeholder="Enter email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <FormErrorMessage>{error}</FormErrorMessage>
-          </FormControl>
-          <FormControl isRequired>
-            <FormLabel>Password</FormLabel>
-            <Input
-              type="password"
-              placeholder="Enter password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </FormControl>
-          <Button
-            colorScheme="blue"
-            type="submit"
-            isLoading={isLoading}
-            loadingText="Logging in..."
-          >
-            {isLoading ? (
-              <>
-                <CircularProgress
-                  isIndeterminate
-                  size="24px"
-                  color='blue.400'
-                  trackColor='transparent'
+    <Center h="100vh" bg="#78aacb">
+      <Stack
+      boxShadow="md"
+      bg="#EBF8FF"
+      p="20"
+      rounded="md"
+      boxSize="450px"
+      alignItems="center"
+      justifyContent="center"
+      >
+        <Link to="/">
+          <Image src={logo} maxW="140px" mb="2" mx="auto" mt="-10"/>  
+        </Link>
+        <Heading className="login-box" fontSize="medium"> Log in </Heading>   
+          <form onSubmit={loginHandler}>
+            <Stack w="400px">
+              <FormControl isRequired isInvalid={error} w="100%">
+                <FormLabel>Email address</FormLabel>
+                <Input
+                  type="email"
+                  placeholder="Enter email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  size="lg"
+                  width="100%"
+                  fontSize="small"
                 />
-                <CircularProgressLabel ml={2}>Logging in...</CircularProgressLabel>
-              </>
-            ) : (
-              'Login'
-            )}
-          </Button>
-          <Text textAlign="center">
-            Don't have an account?{' '}
-            <ChakraLink as={Link} to="/Signup">
-              Signup
-            </ChakraLink>
+                <FormErrorMessage>{error}</FormErrorMessage>
+              </FormControl>
+              <FormControl isRequired>
+                <FormLabel>Password</FormLabel>
+                <Input
+                    type="password"
+                    placeholder="Enter password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    fontSize="small"
+                  />
+                </FormControl>
+                <Button
+                  colorScheme="blue"
+                  type="submit"
+                  isLoading={isLoading}
+                  loadingText="Logging in..."
+                >
+                  {isLoading ? (
+                    <>
+                      <CircularProgress
+                        isIndeterminate
+                        size="24px"
+                        color='blue.400'
+                        trackColor='transparent'
+                      />
+                      <CircularProgressLabel ml={2}>Logging in...</CircularProgressLabel>
+                    </>
+                  ) : (
+                    'Login'
+                  )}
+                </Button>
+                <Text textAlign="center">
+                  Don't have an account?{' '}
+                  <ChakraLink as={Link} to="/Signup">
+                    Signup
+                  </ChakraLink>
+                </Text>
+              </Stack>
+            </form>
+          <Text fontSize='small' fontWeight="Bold" color="red">
+            Log in with information you signuped with
           </Text>
-        </Stack>
-      </form>
-    </Container>
+      </Stack>
+    </Center>
   );
 }
 
