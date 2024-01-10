@@ -9,11 +9,14 @@ import {
   Stack, 
   Text, 
   Link as ChakraLink,
-  useToast
+  useToast,
+  Center,
+  Image
  } from '@chakra-ui/react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useUserContext } from '../UserStates/UserContext';
 import customAxios from '../customAxios/axiosUser';
+import logo from '../../../assets/sbu.png'
 
 function Signup() {
   const toast = useToast();
@@ -61,70 +64,90 @@ function Signup() {
   }
 
   return (
-    <Container maxW="container.sm">
-      <form onSubmit={signupHandler}>
-        <Stack spacing={4} py={6}>
-          <Text textAlign="center" fontSize="2xl">
-            Create an account
-          </Text>
-          <FormControl isRequired>
-            <FormLabel>Username</FormLabel>
-            <Input
-              type="text"
-              placeholder="Enter username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-            />
-          </FormControl>
-          <FormControl isRequired>
-            <FormLabel>Email address</FormLabel>
-            <Input
-              type="email"
-              placeholder="Enter email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </FormControl>
-          <FormControl isRequired>
-            <FormLabel>Password</FormLabel>
-            <Input
-              type="password"
-              placeholder="Enter password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </FormControl>
-          <FormControl isRequired>
-            <FormLabel>Confirm Password</FormLabel>
-            <Input
-              type="password"
-              placeholder="Enter password"
-              value={confirmpassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-            />
-          </FormControl>
-          <FormControl>
-            <FormLabel>Access Link</FormLabel>
-            <Input
-              type="string"
-              placeholder="Enter Access Link"
-              value={accesslink}
-              onChange={(e) => setAccessLink(e.target.value)}
-            />
-          </FormControl>
-          <Button colorScheme="blue" type="submit">
-            Signup
-          </Button>
-          <Text textAlign="center">
-            Already have an account?{' '}
-            <ChakraLink as={Link} to="/Login">
-              Login
-            </ChakraLink>
-          </Text>
-          <FormErrorMessage>{error}</FormErrorMessage>
-        </Stack>
-      </form>
-    </Container>
+    <Center h="100vh" bg="#78aacb">
+      <Stack
+      boxShadow="md"
+      bg="#EBF8FF"
+      p="20"
+      rounded="md"
+      boxSize="600px"
+      alignItems="center"
+      justifyContent="center"
+      >
+        <form onSubmit={signupHandler}>
+            <Stack w="530px">
+                <Link to="/">
+                    <Image src={logo} maxW="140px" mx="auto" mt="-10"/>  
+                </Link>
+            <FormControl isRequired>
+                <FormLabel>Username</FormLabel>
+                <Input
+                type="text"
+                placeholder="Enter username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                size="md"
+                fontSize="small"
+                />
+            </FormControl>
+            <FormControl isRequired>
+                <FormLabel>Email address</FormLabel>
+                <Input
+                type="email"
+                placeholder="Enter email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                size="md"
+                fontSize="small"
+                />
+            </FormControl>
+            <FormControl isRequired>
+                <FormLabel>Password</FormLabel>
+                <Input
+                type="password"
+                placeholder="Enter password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                size="md"
+                fontSize="small"
+                />
+            </FormControl>
+            <FormControl isRequired>
+                <FormLabel>Confirm Password</FormLabel>
+                <Input
+                type="password"
+                placeholder="Enter password"
+                value={confirmpassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                size="md"
+                fontSize="small"
+                />
+            </FormControl>
+            <FormControl>
+                <FormLabel>Access Link</FormLabel>
+                <Input
+                type="string"
+                placeholder="Enter Access Link"
+                value={accesslink}
+                onChange={(e) => setAccessLink(e.target.value)}
+                size="md"
+                fontSize="small"
+                />
+            </FormControl>
+            <Button colorScheme="blue" type="submit">
+                Signup
+            </Button>
+            <Text textAlign="center">
+                Already have an account?{' '}
+                <ChakraLink as={Link} to="/Login">
+                Login
+                </ChakraLink>
+            </Text>
+            <FormErrorMessage>{error}</FormErrorMessage>
+            </Stack>
+        </form>
+      </Stack>
+    </Center>
   );
 }
 
