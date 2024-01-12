@@ -31,11 +31,18 @@ function Chat({ rooms }) {
   const socket = io(API_URL);
 
   useEffect(() => {
-    //console.log('user is ', user)
+    // console.log('user is ', user)
     socket.emit('setup', user);
 
     socket.on('message recieved', (newMessageReceived) => {
-      setMessages((prevMessages) => [...prevMessages, newMessageReceived]);
+      if
+      (selectedChat &&
+      selectedChat._id &&
+      newMessageReceived.chat &&
+      newMessageReceived.chat._id === selectedChat._id
+      ){
+        setMessages((prevMessages) => [...prevMessages, newMessageReceived]); 
+      }
     });
 
     return () => {
@@ -61,6 +68,7 @@ function Chat({ rooms }) {
       const { data } = await customAxios.get(`/msgs/allMessages/${selectedChat._id}`, config)
       //console.log(data);
       setMessages(data);
+      //console.log(selectedChat._id)
       socket.emit('join chat', selectedChat._id);
 
     } catch (error) {
@@ -86,34 +94,34 @@ function Chat({ rooms }) {
 
   const handleSendMessage = async (event) => {
     event.preventDefault();
-  
-    try {
-      const config = {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      };
-      const { data } = await customAxios.post('/msgs/send', {
-        content: newMessage,
-        chatId: selectedChat._id,
-      }, config);
-      //console.log(data)
-  
-      setMessages((prevMessages) => [...prevMessages, data]);
-  
-      socket.emit('send message', data);
-      setNewMessage('');
-    } catch (error) {
-      console.error('Error in handleSendMessage:', error);
-      toast({
-        title: 'Error',
-        description: `Cannot create the message: ${error.message}`,
-        status: 'error',
-        duration: 5000,
-        isClosable: true,
-      });
+
+      try {
+        const config = {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        };
+          const { data } = await customAxios.post('/msgs/send', {
+            content: newMessage,
+            chatId: selectedChat._id,
+          }, config);
+        //console.log(data)
+    
+        setMessages((prevMessages) => [...prevMessages, data]);
+    
+        socket.emit('send message', data);
+        setNewMessage('');
+      } catch (error) {
+        console.error('Error in handleSendMessage:', error);
+        toast({
+          title: 'Error',
+          description: `Cannot create the message: ${error.message}`,
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+        });
+      }
     }
-  };
 
   return (
     <Flex

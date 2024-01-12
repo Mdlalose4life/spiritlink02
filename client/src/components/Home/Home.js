@@ -1,8 +1,9 @@
 import React from 'react';
-import { Box, Button, Heading, Text } from '@chakra-ui/react';
+import { Box, Button, Flex, Heading, Text } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import backgroundImage from '../../assets/neon.jpg';
 import Navigation from '../../components/Home/Header/Navigation'
+import Footer from '../Home/Footer/footer'
 
 
 function Home() {
@@ -12,8 +13,9 @@ function Home() {
   };
 
   return (
-    <Box
-      className="home-container"
+    <Flex
+      direction="column"
+      justify="space-between"
       textAlign="center"
       backgroundImage={`url(${backgroundImage})`}
       backgroundSize="cover"
@@ -23,20 +25,25 @@ function Home() {
       color="white"
     >
       <Navigation />
-      <Heading as="h1" size="xl" py="16" color="#187bcd">
+      <Heading as="h1" size="xl" py="2" color="#187bcd">
         Welcome to SpiritLink
       </Heading>
-      <Text fontSize="xl" mt={4} color="black">
+      <Text fontSize="xl" color="black">
         Tired of getting spam messages and advertisements in your dedicated community?
         <br />
         Or do you want to watch videos without interruptions? 
         <br />
         Start using SpiritLink and truly connect with your friends.
       </Text>
-      <Button colorScheme="blue" size="lg" mt={8} onClick={handleGetStartedClick}>
+      <Button colorScheme="blue"
+              size="lg"
+              mt={8}
+              mx={{base: 4, md: 60}}
+              onClick={handleGetStartedClick}>
         Get Started
       </Button>
-    </Box>
+        <Footer/>
+      </Flex>
   );
 }
 

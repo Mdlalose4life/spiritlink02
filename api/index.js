@@ -56,13 +56,13 @@ io.on('connection', (socket) => {
   
   socket.on('join chat', (room)=>{
     socket.join(room);
-    //console.log('User joined room ' + room);
+    console.log('User joined room ' + room);
   });
   
   socket.on('send message', (newMessageRecieved) => {
     var chat = newMessageRecieved.chat
       
-    console.log(newMessageRecieved)
+    //console.log(newMessageRecieved)
     if (!chat || !chat.users) {
       console.log("Chat or chat.users not defined");
        return;

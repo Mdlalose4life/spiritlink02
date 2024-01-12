@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { 
   Button, 
-  Container, 
   FormControl, 
   FormErrorMessage, 
   FormLabel, 
@@ -11,12 +10,21 @@ import {
   Link as ChakraLink,
   useToast,
   Center,
-  Image
+  Image,
+  InputGroup,
+  InputLeftElement,
+  CircularProgress,
+  CircularProgressLabel
  } from '@chakra-ui/react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useUserContext } from '../UserStates/UserContext';
 import customAxios from '../customAxios/axiosUser';
 import logo from '../../../assets/sbu.png'
+import { MdAlternateEmail } from "react-icons/md";
+import { RiLockPasswordLine } from "react-icons/ri";
+import { CiUser } from "react-icons/ci";
+import { CiLink } from "react-icons/ci";
+
 
 function Signup() {
   const toast = useToast();
@@ -29,20 +37,22 @@ function Signup() {
   const [accesslink, setAccessLink] = useState('');
   const [error] = useState('');
   const {SignupUser} = useUserContext();
+  const [isLoading, setIsLoading] = useState(false)
   
   async function signupHandler(ev) {
     ev.preventDefault();
     try {
-      const response = await customAxios.post('user/register', {
+      setIsLoading(true)
+      const { data } = await customAxios.post('user/register', {
         username,
         email,
         password,
         confirmpassword,
         accesslink,
       });
+
       //console.log('Signup response', response.data);
-      SignupUser(response.user);
-      navigate('/chat');
+      SignupUser(data);
       toast({
         title: 'success',
         description: 'Signup successfully.',
@@ -50,6 +60,11 @@ function Signup() {
         duration: 5000,
         isClosable: true,
       });
+
+      // NAvigate the user to the chat if signup is succesfull
+      localStorage.setItem('UserToken', data.token)
+      localStorage.setItem('userInfo', JSON.stringify(data.user));
+      navigate('/chat');
 
     } catch (error) {
       console.error('Signup failed',error);
@@ -60,6 +75,8 @@ function Signup() {
         duration: 5000,
         isClosable: true,
       });
+    } finally{
+      setIsLoading(false)
     }
   }
 
@@ -81,61 +98,104 @@ function Signup() {
                 </Link>
             <FormControl isRequired>
                 <FormLabel>Username</FormLabel>
-                <Input
-                type="text"
-                placeholder="Enter username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                size="md"
-                fontSize="small"
-                />
+                    <InputGroup>
+                        <InputLeftElement>
+                            <CiUser color='#78aacb'/>
+                        </InputLeftElement>
+                            <Input
+                            type="text"
+                            placeholder="Enter username"
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
+                            size="md"
+                            fontSize="small"
+                            />             
+                    </InputGroup>
             </FormControl>
             <FormControl isRequired>
                 <FormLabel>Email address</FormLabel>
-                <Input
-                type="email"
-                placeholder="Enter email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                size="md"
-                fontSize="small"
-                />
+                    <InputGroup>
+                        <InputLeftElement pointerEvents="none">
+                            <MdAlternateEmail color='#78aacb'/>
+                        </InputLeftElement>
+                            <Input
+                            type="email"
+                            placeholder="Enter email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            size="md"
+                            fontSize="small"
+                            />
+                    </InputGroup>
             </FormControl>
             <FormControl isRequired>
                 <FormLabel>Password</FormLabel>
-                <Input
-                type="password"
-                placeholder="Enter password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                size="md"
-                fontSize="small"
-                />
+                <InputGroup>
+                    <InputLeftElement pointerEvents="none">
+                        <RiLockPasswordLine color='#78aacb'/>
+                    </InputLeftElement>
+                        <Input
+                        type="password"
+                        placeholder="Enter password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        size="md"
+                        fontSize="small"
+                        />
+                </InputGroup>
             </FormControl>
             <FormControl isRequired>
                 <FormLabel>Confirm Password</FormLabel>
-                <Input
-                type="password"
-                placeholder="Enter password"
-                value={confirmpassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                size="md"
-                fontSize="small"
-                />
+                    <InputGroup>
+                        <InputLeftElement pointerEvents="none">
+                            <RiLockPasswordLine color='#78aacb'/>
+                        </InputLeftElement>
+                            <Input
+                            type="password"
+                            placeholder="Enter password"
+                            value={confirmpassword}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
+                            size="md"
+                            fontSize="small"
+                            />
+                    </InputGroup>
             </FormControl>
             <FormControl>
                 <FormLabel>Access Link</FormLabel>
-                <Input
-                type="string"
-                placeholder="Enter Access Link"
-                value={accesslink}
-                onChange={(e) => setAccessLink(e.target.value)}
-                size="md"
-                fontSize="small"
-                />
+                    <InputGroup>
+                        <InputLeftElement pointerEvents="none">
+                            <CiLink color='#78aacb' />
+                        </InputLeftElement>
+                            <Input
+                            type="string"
+                            placeholder="Enter Access Link"
+                            value={accesslink}
+                            onChange={(e) => setAccessLink(e.target.value)}
+                            size="md"
+                            fontSize="small"
+                            />
+                        </InputGroup>
             </FormControl>
-            <Button colorScheme="blue" type="submit">
-                Signup
+            <Button
+            colorScheme="blue"
+            type="submit"
+            isLoading={isLoading}
+            loadingText="Signing up..."
+            >
+              {isLoading ? (
+                <>
+                <CircularProgress
+                  isIndeterminate
+                  size="24px"
+                  color='blue.400'
+                  trackColor='tranparent'
+                />
+                <CircularProgressLabel ml={2}>Signing up... </CircularProgressLabel>
+                </>
+              ) : (
+                'Signup'
+              )}
+
             </Button>
             <Text textAlign="center">
                 Already have an account?{' '}

@@ -13,13 +13,17 @@ import {
   CircularProgressLabel,
   Center,
   Image,
-  Heading
+  Heading,
+  InputGroup,
+  InputLeftElement
 } from '@chakra-ui/react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useUserContext } from '../UserStates/UserContext';
 import customAxios from '../customAxios/axiosUser';
 import logo from '../../../assets/sbu.png'
 import './Login'
+import { MdAlternateEmail } from "react-icons/md";
+import { RiLockPasswordLine } from "react-icons/ri";
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -58,7 +62,7 @@ function Login() {
 
       // Navigate to the chat page upon successful login
       localStorage.setItem('UserToken', data.token);
-      console.log(data.user)
+      //console.log(data.user)
       localStorage.setItem('userInfo', JSON.stringify(data.user));
       navigate('/chat');
 
@@ -95,27 +99,39 @@ function Login() {
           <form onSubmit={loginHandler}>
             <Stack w="400px">
               <FormControl isRequired isInvalid={error} w="100%">
-                <FormLabel>Email address</FormLabel>
-                <Input
-                  type="email"
-                  placeholder="Enter email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  size="lg"
-                  width="100%"
-                  fontSize="small"
-                />
+                <FormLabel> Email address</FormLabel>
+                  <InputGroup>
+                    <InputLeftElement pointerEvents="none">
+                      <MdAlternateEmail color='#78aacb'/>
+                    </InputLeftElement>
+                    <Input
+                      type="email"  
+                      placeholder="Enter email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      size="md"
+                      width="100%"
+                      fontSize="small"
+                    />
+                  </InputGroup>
                 <FormErrorMessage>{error}</FormErrorMessage>
               </FormControl>
               <FormControl isRequired>
                 <FormLabel>Password</FormLabel>
-                <Input
-                    type="password"
-                    placeholder="Enter password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    fontSize="small"
-                  />
+                  <InputGroup>
+                    <InputLeftElement pointerEvents="none">
+                      <RiLockPasswordLine color='#78aacb'/>
+                    </InputLeftElement>
+                      <Input
+                          type="password"
+                          placeholder="Enter password"
+                          value={password}
+                          onChange={(e) => setPassword(e.target.value)}
+                          fontSize="small"
+                          size="md"
+                          width="100%"
+                        />
+                  </InputGroup>
                 </FormControl>
                 <Button
                   colorScheme="blue"
