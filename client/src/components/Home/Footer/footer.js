@@ -13,13 +13,13 @@ export default function Footer() {
     >
       <Container maxW="container.lg">
         <HStack spacing={6}>
-          <ChakraLink as="a" href="/privacy-policy" color="black">
+          <ChakraLink as="a" href="/privacy-policy" color="black" px="40">
             Privacy Policy
           </ChakraLink>
+          <Text color="black">&copy; 2024 SpiritLink. All rights reserved.</Text>          
           <ChakraLink as="a" href="/terms-of-service" color="black">
             Terms of Service
           </ChakraLink>
-          <Text color="black">&copy; 2024 SpiritLink. All rights reserved.</Text>
         </HStack>
       </Container>
     </Flex>
