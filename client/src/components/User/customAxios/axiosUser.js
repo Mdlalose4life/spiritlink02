@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const customAxios = axios.create({
-  baseURL: 'spiritlink02-api.vercel.app',
+  baseURL: 'https://spiritlink02-wyvg.vercel.app/',
 });
 
 customAxios.interceptors.request.use(
