@@ -16,7 +16,7 @@ const io = socketIo(server, {
   cors: {
     origin: "https://spiritlink02-client.vercel.app",
     methods: ['GET', 'POST'],
-    credentials : false
+    credentials : true
   }
 });
 
