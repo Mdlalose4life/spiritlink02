@@ -14,7 +14,7 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIo(server, {
   cors: {
-    origin: "https://spiritlink02-client.vercel.app",
+    origin: "[https://spiritlink02-client.vercel.app]",
     methods: ['GET', 'POST'],
     credentials : true
   }
