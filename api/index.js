@@ -13,11 +13,13 @@ dotenv.config();
 const app = express();
 const server = http.createServer(app);
 const io = socketIo(server, {
+  transports: ['websocket', 'polling'],
   cors: {
     origin: "*",
     methods: ['GET', 'POST'],
-    credentials : true
-  }
+    credentials : true,
+    allowedHeaders: ['Content-Type', 'Authorization'],
+  },
 });
 
 const PORT = process.env.PORT || 3330;
