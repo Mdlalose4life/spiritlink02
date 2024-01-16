@@ -19,7 +19,7 @@ import io from 'socket.io-client';
 import logo from '../../assets/sbu.png'
 import { LuSendHorizonal } from "react-icons/lu";
 
-const API_URL =  'http://localhost:3330/';
+const API_URL =  'https://spiritlink.onrender.com/';
 
 function Chat({ rooms }) {
   const [newMessage, setNewMessage] = useState('');
