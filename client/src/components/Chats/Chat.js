@@ -47,7 +47,6 @@ function Chat({ rooms }) {
 
     return () => {
       socket.off('message recieved');
-      socket.disconnect();
     };
   }, [socket, user]);
 
