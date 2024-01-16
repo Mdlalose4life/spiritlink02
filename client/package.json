@@ -27,8 +27,8 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "npm install && npm install --prefix client && npm run build --prefix client",
     "test": "react-scripts test",
+    "build": "react-scripts build",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

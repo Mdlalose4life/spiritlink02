@@ -47,7 +47,6 @@ function Login() {
       // Set loading state
       setIsLoading(true);
       const { data } = await customAxios.post('user/login' ,{
-        console.log('I received a login request');
         email,
         password,
       }, config);
