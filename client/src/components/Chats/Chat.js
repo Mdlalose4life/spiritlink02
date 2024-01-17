@@ -19,7 +19,7 @@ import io from 'socket.io-client';
 import logo from '../../assets/sbu.png'
 import { LuSendHorizonal } from "react-icons/lu";
 
-const API_URL =  'https://spiritlink.onrender.com/';
+const API_URL =  'https://spiritlink.onrender.com';
 
 function Chat({ rooms }) {
   const [newMessage, setNewMessage] = useState('');
@@ -28,7 +28,7 @@ function Chat({ rooms }) {
   const toast = useToast();
   const { user, selectedChat } = useChat();
 
-  const socket = io(API_URL);
+  const socket = io(API_URL, { path: '/socket.io' });
 
   useEffect(() => {
     // console.log('user is ', user)
