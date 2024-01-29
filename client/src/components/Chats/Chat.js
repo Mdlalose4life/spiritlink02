@@ -93,6 +93,10 @@ function Chat({ rooms }) {
 
   const handleSendMessage = async (event) => {
     event.preventDefault();
+    
+    if (!newMessage.trim()){
+      return
+    }
 
       try {
         const config = {
@@ -104,7 +108,7 @@ function Chat({ rooms }) {
             content: newMessage,
             chatId: selectedChat._id,
           }, config);
-        //console.log(data)
+          console.log('The content', data)
     
         setMessages((prevMessages) => [...prevMessages, data]);
     
