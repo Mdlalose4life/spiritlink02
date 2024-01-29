@@ -20,6 +20,8 @@ import logo from '../../assets/sbu.png'
 import { LuSendHorizonal } from "react-icons/lu";
 
 const API_URL =  'https://spiritlink.onrender.com';
+var socket;
+socket = io(API_URL, { path: '/socket.io' });
 
 function Chat({ rooms }) {
   const [newMessage, setNewMessage] = useState('');
@@ -28,10 +30,7 @@ function Chat({ rooms }) {
   const toast = useToast();
   const { user, selectedChat } = useChat();
 
-  const socket = io(API_URL, { path: '/socket.io' });
-
   useEffect(() => {
-    // console.log('user is ', user)
     socket.emit('setup', user);
 
     socket.on('message recieved', (newMessageReceived) => {
@@ -47,7 +46,7 @@ function Chat({ rooms }) {
 
     return () => {
       socket.off('message recieved');
-      socket.disconnect();
+      //socket.disconnect();
     };
   }, [socket, user]);
 

@@ -46,7 +46,7 @@ app.use('/user', userRoutes);
 app.use('/msgs', messageRoutes);
 app.use('/chat', chatRoutes);
 
-// -------------------- Deplyment prep.---------------------------
+// ------------------------------ Deplyment prep.----------------------------------
 const mainScriptDir = path.dirname(require.main.filename);
 const clientBuildPath = path.join(mainScriptDir, '..', 'client', 'build');
 const indexPath = path.resolve(clientBuildPath, 'index.html');
@@ -66,7 +66,7 @@ if (process.env.NODE_ENV === 'development') {
     res.send('The backend server');
   });
 }
-// -------------------- Deplyment prep.---------------------------
+// ------------------------------ Deplyment prep.----------------------------------
 
 // Socket.io logic
 io.on('connection', (socket) => {
@@ -80,13 +80,13 @@ io.on('connection', (socket) => {
   
   socket.on('join chat', (room)=>{
     socket.join(room);
-    console.log('User joined room ' + room);
+    //console.log('User joined room ' + room);
   });
   
   socket.on('send message', (newMessageRecieved) => {
     var chat = newMessageRecieved.chat
       
-    //console.log(newMessageRecieved)
+    console.log(newMessageRecieved)
     if (!chat || !chat.users) {
       console.log("Chat or chat.users not defined");
        return;
