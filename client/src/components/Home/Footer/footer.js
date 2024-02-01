@@ -1,4 +1,4 @@
-import { Container, Flex, HStack, Link as ChakraLink, Text } from '@chakra-ui/react';
+import { Flex, Text, Box} from '@chakra-ui/react';
 import React from 'react';
 
 export default function Footer() {
@@ -8,20 +8,23 @@ export default function Footer() {
       borderTop="px solid #4299E1"
       py={3}
       justifyContent="center"
-      alignItems="center"
       textAlign="center"
     >
-      <Container maxW="container.lg">
-        <HStack spacing={6}>
-          <ChakraLink as="a" href="/privacy-policy" color="black" px="40">
-            Privacy Policy
-          </ChakraLink>
-          <Text color="black">&copy; 2024 SpiritLink. All rights reserved.</Text>          
-          <ChakraLink as="a" href="/terms-of-service" color="black">
-            Terms of Service
-          </ChakraLink>
-        </HStack>
-      </Container>
+      <Box
+        height={{
+          base: "25%",
+          md: "50%",
+          xl: "100%",
+        }}
+      >
+        <Text color="black" fontSize={{
+          base: "10px",
+          md: "15px",
+          lg: "17px"
+          }}>
+            &copy; 2024 SpiritLink. All rights reserved.
+        </Text>
+      </Box>
     </Flex>
   );
 }
