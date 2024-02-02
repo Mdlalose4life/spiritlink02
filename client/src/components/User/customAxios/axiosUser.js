@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const customAxios = axios.create({
-  baseURL: 'http://localhost:3330/',
+  baseURL: 'https://spiritlink.onrender.com',
 });
 
 customAxios.interceptors.request.use(
