@@ -88,16 +88,21 @@ function Login() {
       bg="#EBF8FF"
       p="20"
       rounded="md"
-      boxSize="450px"
+      boxSize={{ base:"400px",
+                md:"420px",
+                lg:"470px"
+              }}
       alignItems="center"
       justifyContent="center"
       >
         <Link to="/">
           <Image src={logo} maxW="140px" mb="2" mx="auto" mt="-10"/>  
         </Link>
-        <Heading className="login-box" fontSize="medium"> Log in </Heading>   
           <form onSubmit={loginHandler}>
-            <Stack w="400px">
+            <Stack w= {{ base:"340px",
+                        md:"400px",
+                        lg:"410px"
+                        }}>
               <FormControl isRequired isInvalid={error} w="100%">
                 <FormLabel> Email address</FormLabel>
                   <InputGroup>

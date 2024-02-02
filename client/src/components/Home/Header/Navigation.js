@@ -20,16 +20,16 @@ function Navigation() {
           </Link>
           <Spacer />
           <HStack spacing={6}>
-            <ChakraLink as={Link} to="/Login" fontSize={{ base: 'sm', md: 'md' }}>
+            <ChakraLink as={Link} to="/Login" color="black" fontSize={{ base: 'sm', md: 'md' }}>
               Login
             </ChakraLink>
-            <ChakraLink as={Link} to="/Signup" fontSize={{ base: 'sm', md: 'md' }}>
+            <ChakraLink as={Link} to="/Signup" color="black" fontSize={{ base: 'sm', md: 'md' }}>
               Signup
             </ChakraLink>
-            <ChakraLink as={Link} to="/About Us" fontSize={{ base: 'sm', md: 'md' }}>
+            <ChakraLink as={Link} to="/About Us" color="black" fontSize={{ base: 'sm', md: 'md' }}>
               About Us
             </ChakraLink>
-            <ChakraLink as={Link} to="/Services" fontSize={{ base: 'sm', md: 'md' }}>
+            <ChakraLink as={Link} to="/Services" color="black" fontSize={{ base: 'sm', md: 'md' }}>
               Services
             </ChakraLink>
           </HStack>
