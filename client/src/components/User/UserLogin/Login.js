@@ -89,7 +89,7 @@ function Login() {
       p="20"
       rounded="md"
       boxSize={{
-                base:"80%",
+                base:"70%",
                 md:"420px",
                 lg:"470px"
               }}

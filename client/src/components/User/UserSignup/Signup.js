@@ -84,7 +84,7 @@ function Signup() {
     <Center h="100vh" bg="#78aacb">
       <Stack
       boxShadow="md"
-      bg="#EDF2F7"
+      bg="#EBF8FF"
       p="20"
       rounded="md"
       boxSize={{
@@ -96,7 +96,8 @@ function Signup() {
       justifyContent="center"
       >
         <form onSubmit={signupHandler}>
-            <Stack w= {{ base:"320px",
+            <Stack w= {{
+                        base:"320px",
                         md:"520px",
                         lg:"540px"
                         }}>
