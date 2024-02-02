@@ -87,12 +87,18 @@ function Signup() {
       bg="#EBF8FF"
       p="20"
       rounded="md"
-      boxSize="600px"
+      boxSize={{ base:"570px",
+                md:"580px",
+                lg:"590px"
+              }}
       alignItems="center"
       justifyContent="center"
       >
         <form onSubmit={signupHandler}>
-            <Stack w="530px">
+            <Stack w= {{ base:"400px",
+                        md:"520px",
+                        lg:"540px"
+                        }}>
                 <Link to="/">
                     <Image src={logo} maxW="140px" mx="auto" mt="-10"/>  
                 </Link>
