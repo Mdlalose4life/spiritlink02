@@ -101,7 +101,7 @@ function Login() {
           <form onSubmit={loginHandler}>
             <Stack w= {{ base:"340px",
                         md:"400px",
-                        lg:"410px"
+                        lg:"415px"
                         }}>
               <FormControl isRequired isInvalid={error} w="100%">
                 <FormLabel> Email address</FormLabel>
