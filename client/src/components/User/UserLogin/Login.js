@@ -88,7 +88,8 @@ function Login() {
       bg="#EBF8FF"
       p="20"
       rounded="md"
-      boxSize={{ base:"400px",
+      boxSize={{
+                base:"80%",
                 md:"420px",
                 lg:"470px"
               }}
@@ -99,7 +100,8 @@ function Login() {
           <Image src={logo} maxW="140px" mb="2" mx="auto" mt="-10"/>  
         </Link>
           <form onSubmit={loginHandler}>
-            <Stack w= {{ base:"340px",
+            <Stack w= {{
+                        base:"240px",
                         md:"400px",
                         lg:"415px"
                         }}>

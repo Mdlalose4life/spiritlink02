@@ -61,7 +61,7 @@ function Signup() {
         isClosable: true,
       });
 
-      // NAvigate the user to the chat if signup is succesfull
+      // Navigate the user to the chat if signup is succesfull
       localStorage.setItem('UserToken', data.token)
       localStorage.setItem('userInfo', JSON.stringify(data.user));
       navigate('/chat');
@@ -84,10 +84,11 @@ function Signup() {
     <Center h="100vh" bg="#78aacb">
       <Stack
       boxShadow="md"
-      bg="#EBF8FF"
+      bg="#EDF2F7"
       p="20"
       rounded="md"
-      boxSize={{ base:"570px",
+      boxSize={{
+                base:"89%",
                 md:"580px",
                 lg:"590px"
               }}
@@ -95,7 +96,7 @@ function Signup() {
       justifyContent="center"
       >
         <form onSubmit={signupHandler}>
-            <Stack w= {{ base:"400px",
+            <Stack w= {{ base:"320px",
                         md:"520px",
                         lg:"540px"
                         }}>
