@@ -13,7 +13,6 @@ import {
   CircularProgressLabel,
   Center,
   Image,
-  Heading,
   InputGroup,
   InputLeftElement
 } from '@chakra-ui/react';
@@ -33,6 +32,7 @@ function Login() {
   const toast = useToast();
   const navigate = useNavigate();  
   const [isLoading, setIsLoading] = useState(false);
+  const [guestLoading, setguestLoading] = useState(false);
 
   async function loginHandler(ev) {
     ev.preventDefault();
@@ -54,7 +54,7 @@ function Login() {
       LoginUser(data)
       toast({
         title: 'Logged in successfully',
-        description: 'Logged in successfully',
+        description: `Hi ${data.user.username} Welcome back to Spiritlink`,
         status: 'success',
         duration: 5000,
         isClosable: true,
@@ -78,6 +78,58 @@ function Login() {
     } finally {
       // Reset loading state after login attempt
       setIsLoading(false);
+    }
+
+  }
+  async function guestLoginHandler(ev) {
+    ev.preventDefault();
+
+    try {
+      // Set loading state
+      setguestLoading(true);
+
+      // guest login defaults credentials
+      const guestEmail = 'guest@gmail.com';
+      const guestPassword = 'guest0123';
+
+      const config = {
+        headers:{
+          "Content-type": "application/json",          
+        }
+      };
+
+      const { data } = await customAxios.post('user/login' ,{
+        email: guestEmail,
+        password: guestPassword,
+      }, config);
+
+      LoginUser(data)
+      toast({
+        title: 'Guest logged in successfully',
+        description: 'Guest user logged in successfully',
+        status: 'success',
+        duration: 5000,
+        isClosable: true,
+      });
+
+      // Navigate to the chat page upon successful login
+      localStorage.setItem('UserToken', data.token);
+      //console.log(data.user)
+      localStorage.setItem('userInfo', JSON.stringify(data.user));
+      navigate('/chat');
+
+    } catch (error) {
+      console.error(error);
+      toast({
+        title: 'Error',
+        description: 'Guest login failed. Please signup as a guest user',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+    } finally {
+      // Reset loading state after login attempt
+      setguestLoading(false);
     }
   }
 
@@ -158,6 +210,27 @@ function Login() {
                     </>
                   ) : (
                     'Login'
+                  )}
+                </Button>
+                <Button
+                  colorScheme="red"
+                  type="submit"
+                  isLoading={guestLoading}
+                  loadingText="Logging in..."
+                  onClick={guestLoginHandler}
+                >
+                  {guestLoading ? (
+                    <>
+                      <CircularProgress
+                        isIndeterminate
+                        size="24px"
+                        color='blue.400'
+                        trackColor='transparent'
+                      />
+                      <CircularProgressLabel ml={2}>Logging in...</CircularProgressLabel>
+                    </>
+                  ) : (
+                    'Login As A Guest'
                   )}
                 </Button>
                 <Text textAlign="center">
