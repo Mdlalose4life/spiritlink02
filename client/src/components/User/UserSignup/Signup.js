@@ -24,6 +24,7 @@ import { MdAlternateEmail } from "react-icons/md";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { CiUser } from "react-icons/ci";
 import { CiLink } from "react-icons/ci";
+import catoorn from '../../../assets/catoorn_01.png';
 
 
 function Signup() {
@@ -133,30 +134,25 @@ function Signup() {
 
   return (
     <Center h="100vh" bg="#78aacb">
+      <Image src={catoorn} maxW="460px" />
       <Stack
       boxShadow="md"
       bg="#EBF8FF"
       p="20"
       rounded="md"
-      boxSize={{
-                base:"89%",
-                md:"580px",
-                lg:"620px"
-              }}
+      w = {{ base:"600px", md:"580px", lg:"480px"}}
+      h = {{ base:"0px", md:"580px", lg:"530px"}}
       alignItems="center"
       justifyContent="center"
       >
         <form onSubmit={signupHandler}>
-            <Stack w= {{
-                        base:"320px",
-                        md:"520px",
-                        lg:"540px"
-                        }}>
+            <Stack w = {{base:"320px", md:"520px", lg:"420px"}}
+                  h = {{base:"400px", md:"520px", lg:"470px"}}>
                 <Link to="/">
                     <Image src={logo} maxW="140px" mx="auto" mt="-6"/>  
                 </Link>
             <FormControl isRequired>
-                <FormLabel>Username</FormLabel>
+                <FormLabel fontSize="sm">Username</FormLabel>
                     <InputGroup>
                         <InputLeftElement>
                             <CiUser color='#78aacb'/>
@@ -166,13 +162,13 @@ function Signup() {
                             placeholder="Enter username"
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
-                            size="md"
+                            size="sm"
                             fontSize="small"
                             />             
                     </InputGroup>
             </FormControl>
             <FormControl isRequired>
-                <FormLabel>Email address</FormLabel>
+                <FormLabel fontSize="sm">Email address</FormLabel>
                     <InputGroup>
                         <InputLeftElement pointerEvents="none">
                             <MdAlternateEmail color='#78aacb'/>
@@ -182,13 +178,13 @@ function Signup() {
                             placeholder="Enter email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            size="md"
+                            size="sm"
                             fontSize="small"
                             />
                     </InputGroup>
             </FormControl>
             <FormControl isRequired>
-                <FormLabel>Password</FormLabel>
+                <FormLabel fontSize="sm">Password</FormLabel>
                 <InputGroup>
                     <InputLeftElement pointerEvents="none">
                         <RiLockPasswordLine color='#78aacb'/>
@@ -198,13 +194,13 @@ function Signup() {
                         placeholder="Enter password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        size="md"
+                        size="sm"
                         fontSize="small"
                         />
                 </InputGroup>
             </FormControl>
             <FormControl isRequired>
-                <FormLabel>Confirm Password</FormLabel>
+                <FormLabel fontSize="sm">Confirm Password</FormLabel>
                     <InputGroup>
                         <InputLeftElement pointerEvents="none">
                             <RiLockPasswordLine color='#78aacb'/>
@@ -214,13 +210,13 @@ function Signup() {
                             placeholder="Enter password"
                             value={confirmpassword}
                             onChange={(e) => setConfirmPassword(e.target.value)}
-                            size="md"
+                            size="sm"
                             fontSize="small"
                             />
                     </InputGroup>
             </FormControl>
             <FormControl>
-                <FormLabel>Access Link</FormLabel>
+                <FormLabel fontSize="sm">Access Link</FormLabel>
                     <InputGroup>
                         <InputLeftElement pointerEvents="none">
                             <CiLink color='#78aacb' />
@@ -230,7 +226,7 @@ function Signup() {
                             placeholder="Enter Access Link"
                             value={accesslink}
                             onChange={(e) => setAccessLink(e.target.value)}
-                            size="md"
+                            size="sm"
                             fontSize="small"
                             />
                         </InputGroup>
@@ -238,6 +234,7 @@ function Signup() {
             <Button
             colorScheme="blue"
             type="submit"
+            size="sm"
             isLoading={isLoading}
             loadingText="Signing up..."
             >
@@ -259,6 +256,7 @@ function Signup() {
             <Button
             colorScheme="red"
             type="submit"
+            size="sm"
             isLoading={guestLoading}
             loadingText="Signing up..."
             onClick={guestSignupHandler}

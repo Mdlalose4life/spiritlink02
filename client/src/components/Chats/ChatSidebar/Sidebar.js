@@ -3,7 +3,6 @@ import {
   Box,
   List,
   ListItem,
-  useToast,
   Text,
 } from '@chakra-ui/react';
 import customAxios from '../../User/customAxios/axiosUser';
@@ -11,13 +10,14 @@ import { useChat } from '../ChatStates/ChatContext';
 import { Image } from '@chakra-ui/react'
 import icon from '../../../assets/User.png'
 import Chatloader from '../ChatLoaders/chatloader'
+import NotificationBadge from 'react-notification-badge'
 
 function Sidebar() {
-  const toast = useToast();
-  const rooms = ['Groups', 'private chat'];
   const [allUsers, setAllUsers] = useState([]);
   const {selectedChat, setSelectedChat, chats } = useChat();
   const [isLoading, setIsLoading] = useState();
+  const [messageNotifications, setMessageNotifications] = useState([]);
+  
 
   useEffect(() => {
 
@@ -35,10 +35,8 @@ function Sidebar() {
       }
     };
 
-    if (rooms.includes('private chat')) {
-      fetchUsers();
-    }
-  }, [chats, toast]);
+    fetchUsers();
+  }, [chats]);
 
   const accessChat = async (userId) => {
     try {
@@ -48,6 +46,10 @@ function Sidebar() {
         },
       };
       const { data } = await customAxios.post('/chat/accessChat', { userId }, config);
+
+      const updatedNotifications = messageNotifications.filter((id) => id !== userId );
+      setMessageNotifications(updatedNotifications)
+
       //console.log('Access Chat data:', data);
       //console.log('Chat ID:', data._id);
       setSelectedChat(data);
@@ -57,6 +59,31 @@ function Sidebar() {
     }
   };
 
+  const handleNewMessage = (userId) => {
+    if (selectedChat && selectedChat.users && selectedChat.users.length > 0) {
+      console.log('selectedChat', selectedChat);
+      console.log('messageNotifications', messageNotifications);
+  
+      const isSenderInSelectedChat = selectedChat.users.find((chatUser) => chatUser._id === userId);
+      console.log('isSenderInSelectedChat', isSenderInSelectedChat);
+  
+      if (!isSenderInSelectedChat) {
+        console.log('userId not in selectedChat');
+        if (messageNotifications.indexOf(userId) === -1) {
+          console.log('Adding new message notification:', userId);
+          setMessageNotifications((prevNotifications) => [...prevNotifications, userId]);
+          return true;
+        } else {
+          console.log('userId already in messageNotifications');
+        }
+      } else {
+        console.log('userId is in selectedChat');
+      }
+    }
+    return false;
+  };
+  
+  
   return (
     <Box p={1} display="flex" flexDirection="column" height="100%" >
       <>
@@ -90,6 +117,11 @@ function Sidebar() {
                 accessChat(user._id);
               }}
             >
+              <NotificationBadge
+                count={handleNewMessage(user._id) ? 1 : 0}
+                effect={["scale"]}
+                frameLength={10}
+              />
               <Box display="flex" alignItems="center">
                 <Box marginRight={4}>
                   <Image

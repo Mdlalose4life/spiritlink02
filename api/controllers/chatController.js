@@ -15,7 +15,7 @@ exports.accessChat = async (req, res) => {
       users: {
         $all: [req.user._id, userId],
       },
-    }).populate('users', '-password').populate('latestMessage');
+    }).populate('users', '-password', '-confirmpassword').populate('latestMessage');
 
     if (isChat) {
       res.status(200).json(isChat);
@@ -32,7 +32,7 @@ exports.accessChat = async (req, res) => {
       };
       
       const createdChat = await Chat.create(chatData);
-      const fullChat = await Chat.findOne({ _id: createdChat._id }).populate('users', '-password');
+      const fullChat = await Chat.findOne({ _id: createdChat._id }).populate('users', '-password', '-confirmpassword');
 
       res.status(200).json(fullChat);
             
@@ -47,7 +47,7 @@ exports.accessChat = async (req, res) => {
 exports.getChat = async (req, res) => {
   try {
     const chats = await Chat.find({ users: { $ne: [req.user._id] } })
-      .populate('users', '-password')
+      .populate('users', '-password', '-confirmpassword')
       .populate('latestMessage')
       .sort({ updatedAt: -1 });
 

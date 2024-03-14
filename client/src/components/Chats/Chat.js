@@ -23,7 +23,7 @@ const API_URL =  'https://spiritlink.onrender.com';
 var socket;
 socket = io(API_URL, { path: '/socket.io' });
 
-function Chat({ rooms }) {
+function Chat() {
   const [newMessage, setNewMessage] = useState('');
   const [messages, setMessages] = useState([]);
   const [isLoading, setIsLoading] = useState(false)
@@ -108,7 +108,7 @@ function Chat({ rooms }) {
             content: newMessage,
             chatId: selectedChat._id,
           }, config);
-          //console.log('The content', data)
+          console.log('The content', data)
     
         setMessages((prevMessages) => [...prevMessages, data]);
     
@@ -134,7 +134,7 @@ function Chat({ rooms }) {
       <Flex className="full-height">
         {/* Left Border for Chat Names (1/4) */}
         <Box w="25%" className="border-right" borderRight="1px solid gray" rounded="10">
-            <Box size="md" mt={4} mb={2}>
+            <Box size="md" mt={4} mb={2} ml={6}>
               <img src={logo} alt="Logo" style={{ width: '170px', height: 'auto' }} />
             </Box>
           <Box className="chat-names">

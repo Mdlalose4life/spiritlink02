@@ -14,12 +14,14 @@ import {
   Center,
   Image,
   InputGroup,
-  InputLeftElement
+  InputLeftElement,
+  
 } from '@chakra-ui/react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useUserContext } from '../UserStates/UserContext';
 import customAxios from '../customAxios/axiosUser';
 import logo from '../../../assets/sbu.png'
+import catoorn from '../../../assets/catoorns.png'
 import './Login'
 import { MdAlternateEmail } from "react-icons/md";
 import { RiLockPasswordLine } from "react-icons/ri";
@@ -135,21 +137,22 @@ function Login() {
 
   return (
     <Center h="100vh" bg="#78aacb">
+      <Image src={catoorn} maxW="400px" />
       <Stack
       boxShadow="md"
       bg="#EBF8FF"
       p="20"
       rounded="md"
       boxSize={{
-                base:"70%",
-                md:"420px",
+                base:"80%",
+                md:"450px",
                 lg:"470px"
               }}
       alignItems="center"
       justifyContent="center"
       >
         <Link to="/">
-          <Image src={logo} maxW="140px" mb="2" mx="auto" mt="-10"/>  
+          <Image src={logo} maxW="140px" mb="2" mt="-10"/>  
         </Link>
           <form onSubmit={loginHandler}>
             <Stack w= {{
