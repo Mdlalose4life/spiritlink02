@@ -52,7 +52,7 @@ function Login() {
         email,
         password,
       }, config);
-
+      console.log(data)
       LoginUser(data)
       toast({
         title: 'Logged in successfully',
