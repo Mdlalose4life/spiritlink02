@@ -108,7 +108,7 @@ function Chat() {
             content: newMessage,
             chatId: selectedChat._id,
           }, config);
-          console.log('The content', data)
+          //console.log('The content', data)
     
         setMessages((prevMessages) => [...prevMessages, data]);
     

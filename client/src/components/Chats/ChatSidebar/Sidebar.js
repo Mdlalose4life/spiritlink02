@@ -64,8 +64,8 @@ function Sidebar() {
       //console.log('selectedChat', selectedChat);
       //console.log('messageNotifications', messageNotifications);
   
-      //const isSenderInSelectedChat = selectedChat.users.find((chatUser) => chatUser._id === userId);
-      console.log('isSenderInSelectedChat', isSenderInSelectedChat);
+      const isSenderInSelectedChat = selectedChat.users.find((chatUser) => chatUser._id === userId);
+      //console.log('isSenderInSelectedChat', isSenderInSelectedChat);
   
       if (!isSenderInSelectedChat) {
         //console.log('userId not in selectedChat');
@@ -76,8 +76,6 @@ function Sidebar() {
         } else {
           console.log('userId already in messageNotifications');
         }
-      } else {
-        console.log('userId is in selectedChat');
       }
     }
     return false;
