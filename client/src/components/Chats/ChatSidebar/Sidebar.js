@@ -61,16 +61,16 @@ function Sidebar() {
 
   const handleNewMessage = (userId) => {
     if (selectedChat && selectedChat.users && selectedChat.users.length > 0) {
-      console.log('selectedChat', selectedChat);
-      console.log('messageNotifications', messageNotifications);
+      //console.log('selectedChat', selectedChat);
+      //console.log('messageNotifications', messageNotifications);
   
-      const isSenderInSelectedChat = selectedChat.users.find((chatUser) => chatUser._id === userId);
+      //const isSenderInSelectedChat = selectedChat.users.find((chatUser) => chatUser._id === userId);
       console.log('isSenderInSelectedChat', isSenderInSelectedChat);
   
       if (!isSenderInSelectedChat) {
-        console.log('userId not in selectedChat');
+        //console.log('userId not in selectedChat');
         if (messageNotifications.indexOf(userId) === -1) {
-          console.log('Adding new message notification:', userId);
+          //console.log('Adding new message notification:', userId);
           setMessageNotifications((prevNotifications) => [...prevNotifications, userId]);
           return true;
         } else {
