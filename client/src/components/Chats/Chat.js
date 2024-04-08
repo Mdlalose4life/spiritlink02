@@ -98,6 +98,17 @@ function Chat() {
       return
     }
 
+    if (!selectedChat || !selectedChat._id) {
+      toast({
+        title: 'Warning',
+        description: `Please Select a Chat`,
+        status: 'warning',
+        duration: 5000,
+        isClosable: true,
+      });
+      return;
+    }
+
       try {
         const config = {
           headers: {
