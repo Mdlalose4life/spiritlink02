@@ -47,25 +47,25 @@ app.use('/msgs', messageRoutes);
 app.use('/chat', chatRoutes);
 
 // ------------------------------ Deplyment prep.----------------------------------
-const mainScriptDir = path.dirname(require.main.filename);
-const clientBuildPath = path.join(mainScriptDir, '..', 'client', 'build');
-const indexPath = path.resolve(clientBuildPath, 'index.html');
+// const mainScriptDir = path.dirname(require.main.filename);
+// const clientBuildPath = path.join(mainScriptDir, '..', 'client', 'build');
+// const indexPath = path.resolve(clientBuildPath, 'index.html');
 
-console.log('Main Script Directory:', mainScriptDir);
+// console.log('Main Script Directory:', mainScriptDir);
 
-if (process.env.NODE_ENV === 'development') {
-  console.log('Static Path:', clientBuildPath);
-  app.use(express.static(clientBuildPath));
+// if (process.env.NODE_ENV === 'development') {
+//   console.log('Static Path:', clientBuildPath);
+//   app.use(express.static(clientBuildPath));
 
-  app.get('*', (req, res) => {
-    console.log('Index HTML Path:', indexPath);
-    res.sendFile(indexPath);
-  });
-} else {
-  app.get('/', (req, res) => {
-    res.send('The backend server');
-  });
-}
+//   app.get('*', (req, res) => {
+//     console.log('Index HTML Path:', indexPath);
+//     res.sendFile(indexPath);
+//   });
+// } else {
+//   app.get('/', (req, res) => {
+//     res.send('The backend server');
+//   });
+// }
 // ------------------------------ Deplyment prep.----------------------------------
 
 // Socket.io logic

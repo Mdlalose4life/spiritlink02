@@ -6,20 +6,15 @@ const TokenBlackList = require('../models/TokenBlacklist')
 
 dotenv.config()
 
-const envAccesslink = process.env.ENV_ACCESS_LINK;
 const secretKey = process.env.JWT_SECRET_KEY;
 
 // Registration
 exports.registerUser = async (req, res) => {
   try{
-    //console.log("I am called")
+    // console.log("I am called")
     // Logic for registering the new user
-    const { username, email, password, confirmpassword, accesslink } = req.body;
+    const { username, email, password, confirmpassword } = req.body;
   
-    // Compare the accessLink provded
-    if (!accesslink || accesslink != envAccesslink){
-      return res.status(400).json({ message: 'Invalid access link. Please contact the admin' })
-    }
     // Check if email email exists
     const userExist = await User.findOne({ email });
       if (userExist){
@@ -37,8 +32,8 @@ exports.registerUser = async (req, res) => {
   res.status(201).json({user, token})
 
   } catch (err) {
-    console.error(err);
-    res.status(500).send('An error occurred during registration.');
+    console.log(err);
+    res.status(500).send('An error occurred during registration.', err);
   }
 };
 

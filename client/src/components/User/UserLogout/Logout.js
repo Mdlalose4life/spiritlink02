@@ -3,10 +3,9 @@ import customAxios from '../customAxios/axiosUser';
 import {
   Button,
   useToast,
-  CircularProgress,
-  CircularProgressLabel
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
+import { BiLogOutCircle } from "react-icons/bi";
 
 
 function Logout() {
@@ -46,7 +45,7 @@ const [isLoading, setIsLoading] = useState(false)
     isLoading={isLoading}
     loadingText="Logging out..."
     >
-      Logout
+      <BiLogOutCircle />
     </Button>
   </div>
   );

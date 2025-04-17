@@ -18,6 +18,7 @@ import ScrollingChats from './ChatScrolling/ScrollingChats';
 import io from 'socket.io-client';
 import logo from '../../assets/sbu.png'
 import { LuSendHorizonal } from "react-icons/lu";
+import { IoMdArrowRoundBack } from "react-icons/io";
 
 const API_URL =  'https://spiritlink.onrender.com';
 var socket;
@@ -29,6 +30,7 @@ function Chat() {
   const [isLoading, setIsLoading] = useState(false)
   const toast = useToast();
   const { user, selectedChat } = useChat();
+  const [showChats, setShowChats] = useState(false)
 
   useEffect(() => {
     socket.emit('setup', user);
@@ -91,6 +93,12 @@ function Chat() {
     }
   }, [selectedChat]);
 
+  useEffect(() => {
+    if(selectedChat && window.innerWidth < 768){
+      setShowChats(true)
+    }
+  },[selectedChat])
+
   const handleSendMessage = async (event) => {
     event.preventDefault();
     
@@ -144,10 +152,18 @@ function Chat() {
     >
       <Flex className="full-height">
         {/* Left Border for Chat Names (1/4) */}
-        <Box w="25%" className="border-right" borderRight="1px solid gray" rounded="10">
-            <Box size="md" mt={4} mb={2} ml={6}>
+        <Box 
+            w={{ base: '100%', md: '25%' }}
+            display={{ base: showChats ? 'none' : 'block', md: 'block' }}
+            className="border-right" borderRight="1px solid gray" rounded="10">
+              {window.innerWidth < 768 ?
+              <Box size="md" mt={4} mb={2} ml={6} align="center">
+                <img src={logo} alt="Logo" style={{ width: '170px', height: 'auto' }} />
+              </Box>
+              :<Box size="md" mt={4} mb={2} ml={6}>
               <img src={logo} alt="Logo" style={{ width: '170px', height: 'auto' }} />
             </Box>
+              }
           <Box className="chat-names">
             <Sidebar/>
           </Box>
@@ -157,15 +173,36 @@ function Chat() {
         </Box>
 
         {/* Right Border for Messages (3/4) */}
-        <Box w="75%">
+        <Box 
+              w={{ base: '100%', md: '75%' }}
+              display={{ base: showChats ? 'block' : 'none', md: 'block' }}
+        >
           <Box className="message-box" rounded="10">
-            <Text className="messages-label">
-            {selectedChat?.users && selectedChat.users.length > 1 &&
-            (selectedChat.users[0]._id === user._id
-            ? selectedChat.users[1].username
-            : selectedChat.users[0].username)
-            }
-            </Text>
+            <Flex align="center" justify="space-between">
+              <Box>
+                {window.innerWidth < 768 && (
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => setShowChats(false)}
+                  >
+                    <IoMdArrowRoundBack />
+                  </Button>
+                )}
+              </Box>
+              
+              <Box flex="1" textAlign="center" ml={-8}>
+                <Text className="messages-label">
+                  {selectedChat?.users && selectedChat.users.length > 1 &&
+                    (selectedChat.users[0]._id === user._id
+                      ? selectedChat.users[1].username
+                      : selectedChat.users[0].username)
+                  }
+                </Text>
+              </Box>
+
+              <Box />
+            </Flex>
             <Flex
               justify="center"
               align="center"
