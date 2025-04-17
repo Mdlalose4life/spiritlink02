@@ -6,9 +6,7 @@ const customAxios = axios.create({
 
 customAxios.interceptors.request.use(
   (config) => {
-    //console.log("2. Custom Axios");
     const token = localStorage.getItem('UserToken');
-    //console.log(token);
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
