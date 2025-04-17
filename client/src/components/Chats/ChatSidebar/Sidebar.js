@@ -10,7 +10,7 @@ import { useChat } from '../ChatStates/ChatContext';
 import { Image } from '@chakra-ui/react'
 import icon from '../../../assets/User.png'
 import Chatloader from '../ChatLoaders/chatloader'
-import NotificationBadge from 'react-notification-badge'
+// import NotificationBadge from 'react-notification-badge'
 
 function Sidebar() {
   const [allUsers, setAllUsers] = useState([]);
@@ -107,11 +107,11 @@ function Sidebar() {
                 accessChat(user._id);
               }}
             >
-              <NotificationBadge
+              {/* <NotificationBadge
                 count={handleNewMessage(user._id) ? 1 : 0}
                 effect={["scale"]}
                 frameLength={10}
-              />
+              /> */}
               <Box display="flex" alignItems="center">
                 <Box marginRight={4}>
                   <Image
