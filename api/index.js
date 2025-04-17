@@ -46,6 +46,11 @@ app.use('/user', userRoutes);
 app.use('/msgs', messageRoutes);
 app.use('/chat', chatRoutes);
 
+app.get('/', (req, res) => {
+  res.send('The backend server is running');
+});
+
+
 // ------------------------------ Deplyment prep.----------------------------------
 // const mainScriptDir = path.dirname(require.main.filename);
 // const clientBuildPath = path.join(mainScriptDir, '..', 'client', 'build');
@@ -101,6 +106,7 @@ io.on('connection', (socket) => {
     });
   });
 });
+
 
 // Server
 server.listen(PORT, () => {
