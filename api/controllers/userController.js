@@ -33,7 +33,7 @@ exports.registerUser = async (req, res) => {
 
   } catch (err) {
     console.log(err);
-    res.status(500).send('An error occurred during registration.', err);
+    res.status(500).send('An error occurred during registration.');
   }
 };
 
