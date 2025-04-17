@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const customAxios = axios.create({
-  baseURL: 'https://spiritlink02-production.up.railway.app/'
+  baseURL: 'sbusiso/'
 });
 
 customAxios.interceptors.request.use(
