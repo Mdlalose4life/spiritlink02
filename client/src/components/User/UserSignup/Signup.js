@@ -137,7 +137,7 @@ function Signup() {
         justifyContent="center"
       >
         <Link to="/">
-          <Image src={logo} maxW="100px" mx="auto" mb={{ base: 2, md: 0 }} />
+          <Image src={logo} maxW="160px" mx="auto" mb={{ base: 2, md: 0 }} />
         </Link>
 
         <Flex
@@ -148,7 +148,10 @@ function Signup() {
         >
           <Image
             src={catoorn}
+            border="1px solid #CBD5E0"
             maxW={{ base: "220px", sm: "270px", md: "312px", lg: "450px" }}
+            boxShadow="lg"
+            rounded="md"
           />
 
           <form onSubmit={signupHandler}>
@@ -169,6 +172,8 @@ function Signup() {
                     onChange={(e) => setUsername(e.target.value)}
                     size="sm"
                     fontSize="sm"
+                    boxShadow="sm"
+                    rounded="md"
                   />
                 </InputGroup>
               </FormControl>
@@ -186,6 +191,8 @@ function Signup() {
                     onChange={(e) => setEmail(e.target.value)}
                     size="sm"
                     fontSize="sm"
+                    boxShadow="sm"
+                    rounded="md"
                   />
                 </InputGroup>
               </FormControl>
@@ -203,6 +210,8 @@ function Signup() {
                     onChange={(e) => setPassword(e.target.value)}
                     size="sm"
                     fontSize="sm"
+                    boxShadow="sm"
+                    rounded="md"
                   />
                 </InputGroup>
               </FormControl>
@@ -220,6 +229,8 @@ function Signup() {
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     size="sm"
                     fontSize="sm"
+                    boxShadow="sm"
+                    rounded="md"
                   />
                 </InputGroup>
               </FormControl>

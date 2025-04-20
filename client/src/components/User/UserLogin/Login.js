@@ -118,6 +118,7 @@ function Login() {
         bg="#EBF8FF"
         p={{ base: 4, sm: 10 }}
         rounded="md"
+        border="1px solid #CBD5E0"
         w={{ base: "95%", md: "460px", lg: "990px" }}
         maxH={{ base: "100%", md: "95%", lg: "63%" }}
         spacing={6}
@@ -125,7 +126,7 @@ function Login() {
         justifyContent="center"
       >
         <Link to="/">
-          <Image src={logo} maxW="100px" mx="auto" mb={{ base: 2, md: 0 }} />
+          <Image src={logo} maxW="160px" mx="auto" mb={{ base: 2, md: 0 }} />
         </Link>
 
         <Flex
@@ -137,6 +138,8 @@ function Login() {
           <Image
             src={catoorn}
             maxW={{ base: "220px", sm: "270px", md: "312px", lg: "450px" }}
+            boxShadow="lg"
+            rounded="md"
           />
 
           <form onSubmit={loginHandler}>
@@ -157,6 +160,8 @@ function Login() {
                     onChange={(e) => setEmail(e.target.value)}
                     size="sm"
                     fontSize="sm"
+                    boxShadow="sm"
+                    rounded="md"
                   />
                 </InputGroup>
               </FormControl>
@@ -174,6 +179,8 @@ function Login() {
                     onChange={(e) => setPassword(e.target.value)}
                     size="sm"
                     fontSize="sm"
+                    boxShadow="sm"
+                    rounded="md"
                   />
                 </InputGroup>
               </FormControl>
@@ -183,6 +190,8 @@ function Login() {
                 type="submit"
                 size="sm"
                 isLoading={isLoading}
+                boxShadow="sm"
+                rounded="md"
               >
                 {isLoading ? (
                   <>
@@ -200,6 +209,8 @@ function Login() {
                 size="sm"
                 isLoading={guestLoading}
                 onClick={guestLoginHandler}
+                boxShadow="sm"
+                rounded="md"
               >
                 {guestLoading ? (
                   <>
