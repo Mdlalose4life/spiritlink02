@@ -191,7 +191,7 @@ function Chat() {
                 )}
               </Box>
               
-              <Box flex="1" textAlign="center" ml={-8}>
+              <Box flex="1" textAlign="center" ml={{ base: -8, md: 0 }}>
                 <Text className="messages-label">
                   {selectedChat?.users && selectedChat.users.length > 1 &&
                     (selectedChat.users[0]._id === user._id
