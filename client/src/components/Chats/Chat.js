@@ -20,7 +20,7 @@ import logo from '../../assets/sbu.png'
 import { LuSendHorizonal } from "react-icons/lu";
 import { IoMdArrowRoundBack } from "react-icons/io";
 
-const API_URL =  'https://spiritlink.onrender.com';
+const API_URL =  'https://spiritlink02-production.up.railway.app/';
 var socket;
 socket = io(API_URL, { path: '/socket.io' });
 
